@@ -1,0 +1,664 @@
+"use client";
+
+import { useEffect, useState, useRef } from "react";
+import { useRouter, useParams } from "next/navigation";
+import { useAuth } from "@/lib/auth-context";
+import {
+  getCourse,
+  getTopic,
+  getTopicsByModule,
+  getProgress,
+  toggleTopicComplete,
+  updateTopic,
+} from "@/lib/storage";
+import type {
+  Course,
+  Topic,
+  TopicContent,
+  Progress as ProgressType,
+} from "@/lib/types";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Textarea } from "@/components/ui/textarea";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  ArrowLeft,
+  BookOpen,
+  CheckCircle2,
+  ChevronLeft,
+  ChevronRight,
+  Loader2,
+  MessageCircle,
+  Send,
+  Sparkles,
+  FileText,
+  ListChecks,
+  BookMarked,
+  X,
+} from "lucide-react";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
+
+interface Message {
+  role: "user" | "assistant";
+  content: string;
+}
+
+export default function TopicViewerPage() {
+  const router = useRouter();
+  const params = useParams();
+  const courseId = params.id as string;
+  const topicId = params.topicId as string;
+  const { isAuthenticated, isLoading, user } = useAuth();
+
+  const [course, setCourse] = useState<Course | null>(null);
+  const [topic, setTopic] = useState<Topic | null>(null);
+  const [content, setContent] = useState<TopicContent | null>(null);
+  const [progress, setProgress] = useState<ProgressType | null>(null);
+  const [notes, setNotes] = useState("");
+
+  // AI Assistant
+  const [assistantOpen, setAssistantOpen] = useState(false);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [inputMessage, setInputMessage] = useState("");
+  const [isAsking, setIsAsking] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Navigation
+  const [siblingTopics, setSiblingTopics] = useState<Topic[]>([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    if (!isLoading && !isAuthenticated) {
+      router.push("/");
+    }
+  }, [isAuthenticated, isLoading, router]);
+
+  useEffect(() => {
+    if (isAuthenticated && courseId && topicId) {
+      loadData();
+    }
+  }, [isAuthenticated, courseId, topicId]);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  const loadData = () => {
+    const c = getCourse(courseId);
+    if (!c) {
+      router.push("/dashboard");
+      return;
+    }
+    setCourse(c);
+
+    const t = getTopic(topicId);
+    if (!t) {
+      router.push(`/courses/${courseId}`);
+      return;
+    }
+    setTopic(t);
+    setContent(t.content);
+    setNotes(t.content?.notes || "");
+
+    const siblings = getTopicsByModule(t.moduleId);
+    setSiblingTopics(siblings);
+    setCurrentIndex(siblings.findIndex((s) => s.id === topicId));
+
+    setProgress(getProgress(courseId));
+  };
+
+  const handleAskQuestion = async () => {
+    if (!inputMessage.trim() || !topic || !course || isAsking) return;
+
+    const userMessage = inputMessage.trim();
+    setInputMessage("");
+    setMessages((prev) => [...prev, { role: "user", content: userMessage }]);
+    setIsAsking(true);
+
+    // Simulate AI response
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    const mockResponses = [
+      `"${
+        topic.title
+      }" mavzusi bo'yicha savolingizga javob:\n\nBu mavzuda asosiy e'tibor ${topic.description.toLowerCase()} ga qaratilgan. Grammatik qoidalarni yaxshi o'zlashtirish uchun har kuni amaliyot qilishni tavsiya qilaman.\n\nQo'shimcha savollaringiz bo'lsa, bemalol so'rang!`,
+      `Yaxshi savol! "${topic.title}" mavzusida eng muhim jihat - bu qoidalarni amaliyotda qo'llash.\n\nMaslahat: Har bir yangi so'z yoki iborani kamida 5 marta yozib mashq qiling. Bu xotirada yaxshi saqlanishiga yordam beradi.`,
+      `Bu savol ko'p o'quvchilarni qiziqtiradi. "${topic.title}" ni o'rganishda quyidagilarga e'tibor bering:\n\n1. Asosiy qoidani tushunib oling\n2. Misollarni yod oling\n3. O'zingiz gaplar tuzing\n4. Kundalik muloqotda qo'llang`,
+    ];
+
+    const randomResponse =
+      mockResponses[Math.floor(Math.random() * mockResponses.length)];
+
+    // Simulate typing effect
+    let displayedText = "";
+    for (let i = 0; i < randomResponse.length; i++) {
+      displayedText += randomResponse[i];
+      setMessages((prev) => {
+        const newMessages = [...prev];
+        if (newMessages[newMessages.length - 1]?.role === "assistant") {
+          newMessages[newMessages.length - 1] = {
+            role: "assistant",
+            content: displayedText,
+          };
+        } else {
+          newMessages.push({ role: "assistant", content: displayedText });
+        }
+        return newMessages;
+      });
+      await new Promise((resolve) => setTimeout(resolve, 15));
+    }
+
+    setIsAsking(false);
+  };
+
+  const handleToggleComplete = () => {
+    const newProgress = toggleTopicComplete(courseId, topicId);
+    setProgress(newProgress);
+  };
+
+  const saveNotes = () => {
+    if (!topic || !content) return;
+    const updatedContent = { ...content, notes };
+    const updatedTopic = { ...topic, content: updatedContent };
+    updateTopic(updatedTopic);
+    setTopic(updatedTopic);
+    setContent(updatedContent);
+  };
+
+  const goToTopic = (direction: "prev" | "next") => {
+    const newIndex = direction === "prev" ? currentIndex - 1 : currentIndex + 1;
+    if (newIndex >= 0 && newIndex < siblingTopics.length) {
+      router.push(`/courses/${courseId}/topics/${siblingTopics[newIndex].id}`);
+    }
+  };
+
+  const isCompleted = progress?.completedTopics.includes(topicId) ?? false;
+
+  const AssistantContent = () => (
+    <div className="flex flex-col h-full">
+      <ScrollArea className="flex-1 p-3">
+        <div className="space-y-4">
+          {messages.length === 0 && (
+            <div className="text-center py-8">
+              <MessageCircle className="h-12 w-12 text-muted-foreground/30 mx-auto mb-3" />
+              <p className="text-sm text-muted-foreground">
+                Mavzu bo'yicha savollaringizni bering
+              </p>
+            </div>
+          )}
+          {messages.map((msg, index) => (
+            <div
+              key={index}
+              className={cn(
+                "p-3 rounded-lg text-sm",
+                msg.role === "user" ? "bg-primary/10 ml-4" : "bg-muted/50 mr-4"
+              )}
+            >
+              <p className="text-foreground/90 whitespace-pre-wrap">
+                {msg.content}
+              </p>
+            </div>
+          ))}
+          {isAsking && messages[messages.length - 1]?.role !== "assistant" && (
+            <div className="flex items-center gap-2 text-muted-foreground text-sm">
+              <Loader2 className="h-4 w-4 animate-spin" />
+              Javob yozilmoqda...
+            </div>
+          )}
+          <div ref={messagesEndRef} />
+        </div>
+      </ScrollArea>
+
+      <div className="p-3 border-t border-border/50 mt-auto">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleAskQuestion();
+          }}
+          className="flex gap-2"
+        >
+          <Input
+            value={inputMessage}
+            onChange={(e) => setInputMessage(e.target.value)}
+            placeholder="Savol bering..."
+            disabled={isAsking}
+          />
+          <Button
+            type="submit"
+            size="icon"
+            disabled={isAsking || !inputMessage.trim()}
+          >
+            <Send className="h-4 w-4" />
+          </Button>
+        </form>
+      </div>
+    </div>
+  );
+
+  if (isLoading || !course || !topic) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-background flex flex-col">
+      <header className="border-b border-border/50 bg-card/50 backdrop-blur-sm shrink-0 z-10">
+        <div className="px-3 md:px-4 py-3 flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2 md:gap-4 min-w-0">
+            <Link href={`/courses/${courseId}`}>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="shrink-0 h-8 w-8 md:h-9 md:w-9"
+              >
+                <ArrowLeft className="h-4 w-4" />
+              </Button>
+            </Link>
+            <div className="min-w-0">
+              <h1 className="font-semibold text-foreground text-sm md:text-base truncate">
+                {topic.title}
+              </h1>
+              <p className="text-xs text-muted-foreground">
+                {course.targetLanguage} - {course.level}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <Button
+              variant={isCompleted ? "default" : "outline"}
+              size="sm"
+              onClick={handleToggleComplete}
+              className={cn(
+                "text-xs md:text-sm",
+                isCompleted ? "bg-emerald-600 hover:bg-emerald-700" : ""
+              )}
+            >
+              <CheckCircle2 className="h-4 w-4 md:mr-2" />
+              <span className="hidden md:inline">
+                {isCompleted ? "Tugatildi" : "Tugatish"}
+              </span>
+            </Button>
+
+            <Sheet open={assistantOpen} onOpenChange={setAssistantOpen}>
+              <SheetTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="h-8 w-8 md:h-9 md:w-9 lg:hidden bg-transparent"
+                >
+                  <MessageCircle className="h-4 w-4" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent
+                side="right"
+                className="w-full sm:w-96 p-0 flex flex-col"
+              >
+                <div className="p-3 border-b border-border/50 flex items-center justify-between shrink-0">
+                  <div className="flex items-center gap-2">
+                    <Sparkles className="h-4 w-4 text-primary" />
+                    <h3 className="font-medium text-foreground text-sm">
+                      AI Assistant
+                    </h3>
+                  </div>
+                </div>
+                <div className="flex-1 overflow-hidden">
+                  <AssistantContent />
+                </div>
+              </SheetContent>
+            </Sheet>
+
+            {/* Desktop: Toggle button */}
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => setAssistantOpen(!assistantOpen)}
+              className="hidden lg:flex"
+            >
+              {assistantOpen ? (
+                <X className="h-4 w-4" />
+              ) : (
+                <MessageCircle className="h-4 w-4" />
+              )}
+            </Button>
+          </div>
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <div className="flex-1 flex overflow-hidden">
+        {/* Content Area */}
+        <main className="flex-1 overflow-hidden">
+          {!content ? (
+            <div className="h-full flex items-center justify-center p-4">
+              <Card className="max-w-md w-full">
+                <CardContent className="pt-8 pb-8 text-center">
+                  <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+                    <BookOpen className="h-8 w-8 text-primary" />
+                  </div>
+                  <h3 className="text-lg font-medium text-foreground mb-2">
+                    Kontent mavjud emas
+                  </h3>
+                  <p className="text-muted-foreground text-sm mb-6">
+                    Bu mavzu uchun kontent hali yaratilmagan
+                  </p>
+                  <Link href={`/courses/${courseId}`}>
+                    <Button variant="outline">
+                      <ArrowLeft className="mr-2 h-4 w-4" />
+                      Kursga qaytish
+                    </Button>
+                  </Link>
+                </CardContent>
+              </Card>
+            </div>
+          ) : (
+            <ScrollArea className="h-full">
+              <div className="max-w-3xl mx-auto p-4 md:p-6 space-y-4 md:space-y-6">
+                <Tabs defaultValue="explanation" className="w-full">
+                  <TabsList className="flex w-full h-auto">
+                    <TabsTrigger
+                      value="explanation"
+                      className="text-xs px-2 py-2 md:text-sm md:px-4"
+                    >
+                      <FileText className="h-4 w-4 md:mr-1" />
+                      <span className="hidden sm:inline">Dars</span>
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="examples"
+                      className="text-xs px-2 py-2 md:text-sm md:px-4"
+                    >
+                      <BookMarked className="h-4 w-4 md:mr-1" />
+                      <span className="hidden sm:inline">Misollar</span>
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="tasks"
+                      className="text-xs px-2 py-2 md:text-sm md:px-4"
+                    >
+                      <ListChecks className="h-4 w-4 md:mr-1" />
+                      <span className="hidden sm:inline">Mashqlar</span>
+                    </TabsTrigger>
+                    {/* <TabsTrigger
+                      value="notes"
+                      className="text-xs px-2 py-2 md:text-sm md:px-4"
+                    >
+                      <BookOpen className="h-4 w-4 md:mr-1" />
+                      <span className="hidden sm:inline">Yozuvlar</span>
+                    </TabsTrigger> */}
+                  </TabsList>
+
+                  <TabsContent
+                    value="explanation"
+                    className="mt-4 md:mt-6 space-y-4 md:space-y-6"
+                  >
+                    <Card>
+                      <CardHeader className="pb-2 md:pb-4">
+                        <CardTitle className="text-base md:text-lg">
+                          Tushuntirish
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="prose prose-invert prose-sm max-w-none">
+                          <p className="text-foreground/90 whitespace-pre-wrap leading-relaxed text-sm md:text-base">
+                            {content?.explanation}
+                          </p>
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    {content?.grammar && (
+                      <Card className="bg-amber-500/5 border-amber-500/20">
+                        <CardHeader className="pb-2 md:pb-4">
+                          <CardTitle className="text-base md:text-lg text-amber-400">
+                            Grammatika
+                          </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <p className="text-foreground/90 whitespace-pre-wrap text-sm md:text-base">
+                            {content.grammar}
+                          </p>
+                        </CardContent>
+                      </Card>
+                    )}
+
+                    {content?.story && (
+                      <Card className="bg-primary/5 border-primary/20">
+                        <CardHeader className="pb-2 md:pb-4">
+                          <CardTitle className="text-base md:text-lg">
+                            Hikoya / Dialog
+                          </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <p className="text-foreground/90 whitespace-pre-wrap italic text-sm md:text-base">
+                            {content.story}
+                          </p>
+                        </CardContent>
+                      </Card>
+                    )}
+                  </TabsContent>
+
+                  <TabsContent value="examples" className="mt-4 md:mt-6">
+                    <Card>
+                      <CardHeader className="pb-2 md:pb-4">
+                        <CardTitle className="text-base md:text-lg">
+                          Amaliy misollar
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="space-y-3">
+                          {content?.examples.map((example, index) => (
+                            <div
+                              key={index}
+                              className="p-3 md:p-4 rounded-lg bg-muted/30 border border-border/50"
+                            >
+                              <div className="flex items-start gap-3">
+                                <Badge variant="secondary" className="shrink-0">
+                                  {index + 1}
+                                </Badge>
+                                <p className="text-foreground/90 text-sm md:text-base">
+                                  {example}
+                                </p>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </TabsContent>
+
+                  <TabsContent value="tasks" className="mt-4 md:mt-6">
+                    <Card>
+                      <CardHeader className="pb-2 md:pb-4">
+                        <CardTitle className="text-base md:text-lg">
+                          Mashqlar
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-4 md:space-y-6">
+                        {content?.tasks.map((task, index) => (
+                          <TaskItem
+                            key={task.id || index}
+                            task={task}
+                            index={index}
+                          />
+                        ))}
+                      </CardContent>
+                    </Card>
+                  </TabsContent>
+
+                  <TabsContent value="notes" className="mt-4 md:mt-6">
+                    <Card>
+                      <CardHeader className="pb-2 md:pb-4">
+                        <CardTitle className="text-base md:text-lg">
+                          Shaxsiy yozuvlar
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        <Textarea
+                          value={notes}
+                          onChange={(e) => setNotes(e.target.value)}
+                          placeholder="Bu yerga o'z yozuvlaringizni yozing..."
+                          className="min-h-[150px] md:min-h-[200px]"
+                        />
+                        <Button
+                          onClick={saveNotes}
+                          variant="secondary"
+                          className="w-full sm:w-auto"
+                        >
+                          Saqlash
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  </TabsContent>
+                </Tabs>
+
+                {/* <div className="flex items-center justify-between pt-4 border-t border-border/50">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => goToTopic("prev")}
+                    disabled={currentIndex === 0}
+                    className="text-xs md:text-sm"
+                  >
+                    <ChevronLeft className="h-4 w-4 md:mr-2" />
+                    <span className="hidden sm:inline">Oldingi</span>
+                  </Button>
+                  <span className="text-xs md:text-sm text-muted-foreground">
+                    {currentIndex + 1} / {siblingTopics.length}
+                  </span>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => goToTopic("next")}
+                    disabled={currentIndex === siblingTopics.length - 1}
+                    className="text-xs md:text-sm"
+                  >
+                    <span className="hidden sm:inline">Keyingi</span>
+                    <ChevronRight className="h-4 w-4 md:ml-2" />
+                  </Button>
+                </div> */}
+              </div>
+            </ScrollArea>
+          )}
+        </main>
+
+        {assistantOpen && (
+          <aside className="w-72 xl:w-80 border-l border-border/50 bg-card/30 flex flex-col shrink-0 hidden lg:flex">
+            <div className="p-3 border-b border-border/50 flex items-center justify-between shrink-0">
+              <div className="flex items-center gap-2">
+                <Sparkles className="h-4 w-4 text-primary" />
+                <h3 className="font-medium text-foreground text-sm">
+                  AI Assistant
+                </h3>
+              </div>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8"
+                onClick={() => setAssistantOpen(false)}
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
+            <div className="flex-1 overflow-hidden">
+              <AssistantContent />
+            </div>
+          </aside>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// Task Component
+function TaskItem({
+  task,
+  index,
+}: {
+  task: TopicContent["tasks"][0];
+  index: number;
+}) {
+  const [selected, setSelected] = useState<string | null>(null);
+  const [userAnswer, setUserAnswer] = useState("");
+  const [showAnswer, setShowAnswer] = useState(false);
+
+  const isCorrect =
+    task.type === "multiple-choice"
+      ? selected === task.answer
+      : userAnswer.toLowerCase().trim() === task.answer.toLowerCase().trim();
+
+  return (
+    <div className="p-3 md:p-4 rounded-lg bg-muted/20 border border-border/50">
+      <p className="font-medium text-foreground mb-3 text-sm md:text-base">
+        {index + 1}. {task.question}
+      </p>
+
+      {task.type === "multiple-choice" && task.options && (
+        <div className="space-y-2">
+          {task.options.map((option, optIndex) => (
+            <button
+              key={optIndex}
+              onClick={() => {
+                setSelected(option);
+                setShowAnswer(true);
+              }}
+              disabled={showAnswer}
+              className={cn(
+                "w-full text-left p-2 md:p-3 rounded-lg border transition-colors text-sm md:text-base",
+                showAnswer && option === task.answer
+                  ? "bg-emerald-500/10 border-emerald-500/50 text-emerald-400"
+                  : showAnswer && option === selected && option !== task.answer
+                  ? "bg-red-500/10 border-red-500/50 text-red-400"
+                  : "bg-background/50 border-border/50 hover:border-primary/50"
+              )}
+            >
+              {option}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {(task.type === "fill-blank" || task.type === "translate") && (
+        <div className="space-y-3">
+          <Input
+            value={userAnswer}
+            onChange={(e) => setUserAnswer(e.target.value)}
+            placeholder="Javobingizni yozing..."
+            disabled={showAnswer}
+            className="text-sm md:text-base"
+          />
+          {!showAnswer && (
+            <Button
+              size="sm"
+              onClick={() => setShowAnswer(true)}
+              disabled={!userAnswer.trim()}
+              className="w-full sm:w-auto"
+            >
+              Tekshirish
+            </Button>
+          )}
+          {showAnswer && (
+            <div
+              className={cn(
+                "p-3 rounded-lg text-sm",
+                isCorrect
+                  ? "bg-emerald-500/10 text-emerald-400"
+                  : "bg-red-500/10 text-red-400"
+              )}
+            >
+              {isCorrect
+                ? "To'g'ri!"
+                : `Noto'g'ri. To'g'ri javob: ${task.answer}`}
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}

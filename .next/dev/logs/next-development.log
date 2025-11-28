@@ -1,0 +1,821 @@
+[00:00:02.207] Server  LOG     
+[00:00:02.208] Server  LOG        We detected TypeScript in your project and reconfigured your tsconfig.json file for you.
+[00:00:02.208] Server  LOG        The following suggested values were added to your tsconfig.json. These values can be changed to fit your project's needs:
+
+[00:00:02.208] Server  LOG        	- include was updated to add '.next/dev/types/**/*.ts'
+[00:00:02.208] Server  LOG     
+[00:00:02.208] Server  LOG        The following mandatory changes were made to your tsconfig.json:
+
+[00:00:02.208] Server  LOG        	- jsx was set to react-jsx (next.js uses the React automatic runtime)
+[00:00:02.208] Server  LOG     
+[00:00:02.288] Server  LOG      ✓ Ready in 2.1s
+[00:00:09.959] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:10.764] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[00:00:10.764] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/","route":"/"}
+[00:00:10.764] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/ color: rgb(120, 120, 120) color: inherit {"dp":"/","o":"http://localhost:3000/","r":"","sdkn":"@vercel/analytics/next","sdkv":"1.5.0","sv":"0.1.3","ts":1764353511638}
+[00:00:32.617] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/dashboard color: rgb(120, 120, 120) color: inherit {"dp":"/dashboard","o":"http://localhost:3000/dashboard","sdkn":"@vercel/analytics/next","sdkv":"1.5.0","sv":"0.1.3","ts":1764353533490}
+[00:00:33.803] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/courses/new color: rgb(120, 120, 120) color: inherit {"dp":"/courses/new","o":"http://localhost:3000/courses/new","sdkn":"@vercel/analytics/next","sdkv":"1.5.0","sv":"0.1.3","ts":1764353534677}
+[00:00:35.452] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/dashboard color: rgb(120, 120, 120) color: inherit {"dp":"/dashboard","o":"http://localhost:3000/dashboard","sdkn":"@vercel/analytics/next","sdkv":"1.5.0","sv":"0.1.3","ts":1764353536322}
+[00:00:39.284] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/courses/new color: rgb(120, 120, 120) color: inherit {"dp":"/courses/new","o":"http://localhost:3000/courses/new","sdkn":"@vercel/analytics/next","sdkv":"1.5.0","sv":"0.1.3","ts":1764353540157}
+[00:00:51.400] Browser LOG     [v0] Starting course creation...
+[00:00:51.400] Browser LOG     [v0] Generated courseId: 866e6aea-d9fc-4416-a753-ab38f1f79d22
+[00:00:51.400] Browser LOG     [v0] Saving course: {"createdAt":"2025-11-28T18:12:32.366Z","dailyTime":75,"id":"866e6aea-d9fc-4416-a753-ab38f1f79d22","interests":["IT va texnologiya","San'at","Sayohat"],"language":"O'zbek tili","level":"A2","profession":"doctor","status":"generating","targetLanguage":"Ingliz tili","userId":"a5439165-3b8c-4c00-af46-e38191f7a941"}
+[00:00:51.400] Browser LOG     [v0] Course saved successfully
+[00:00:51.400] Browser LOG     [v0] Setting redirect URL: /courses/866e6aea-d9fc-4416-a753-ab38f1f79d22/generate
+[00:00:51.400] Browser LOG     [v0] Redirecting to: /courses/866e6aea-d9fc-4416-a753-ab38f1f79d22/generate
+[00:00:51.760] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:51.871] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[00:00:51.871] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/courses/866e6aea-d9fc-4416-a753-ab38f1f79d22/generate","route":"/courses/[id]/generate"}
+[00:00:51.871] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/courses/866e6aea-d9fc-4416-a753-ab38f1f79d22/generate color: rgb(120, 120, 120) color: inherit {"dp":"/courses/[id]/generate","o":"http://localhost:3000/courses/866e6aea-d9fc-4416-a753-ab38f1f79d22/generate","sdkn":"@vercel/analytics/next","sdkv":"1.5.0","sv":"0.1.3","ts":1764353552745}
+[00:00:57.052] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:57.197] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[00:00:57.197] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/courses/866e6aea-d9fc-4416-a753-ab38f1f79d22","route":"/courses/[id]"}
+[00:00:57.197] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/courses/866e6aea-d9fc-4416-a753-ab38f1f79d22 color: rgb(120, 120, 120) color: inherit {"dp":"/courses/[id]","o":"http://localhost:3000/courses/866e6aea-d9fc-4416-a753-ab38f1f79d22","sdkn":"@vercel/analytics/next","sdkv":"1.5.0","sv":"0.1.3","ts":1764353558070}
+[00:01:21.091] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/dashboard color: rgb(120, 120, 120) color: inherit {"dp":"/dashboard","o":"http://localhost:3000/dashboard","sdkn":"@vercel/analytics/next","sdkv":"1.5.0","sv":"0.1.3","ts":1764353581961}
+[00:01:22.983] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/courses/866e6aea-d9fc-4416-a753-ab38f1f79d22 color: rgb(120, 120, 120) color: inherit {"dp":"/courses/[id]","o":"http://localhost:3000/courses/866e6aea-d9fc-4416-a753-ab38f1f79d22","sdkn":"@vercel/analytics/next","sdkv":"1.5.0","sv":"0.1.3","ts":1764353583832}
+[00:01:34.192] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:01:38.553] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:01:46.454] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:03:34.289] Server  LOG      ✓ Compiled in 38ms
+[00:03:35.319] Server  LOG      ✓ Compiled in 27ms
+[00:03:38.248] Server  LOG      ✓ Compiled in 21ms
+[00:07:25.540] Server  LOG      ✓ Compiled in 39ms
+[00:07:27.474] Server  LOG      ✓ Compiled in 47ms
+[00:07:27.578] Browser ERROR   ./app/courses/[id]/page.tsx:382:17
+Parsing ecmascript source code failed
+  380 |               <div className="p-2 space-y-1">
+  381 |                 <
+> 382 |                 {modules.map((module, index) => {
+      |                 ^
+  383 |                   const isSelected = selectedModule?.id === module.id;
+  384 |                   const isCompleted = isModuleCompleted(module.id);
+  385 |
+
+Expected '</', got '{'
+
+Import traces:
+  Client Component Browser:
+    ./app/courses/[id]/page.tsx [Client Component Browser]
+    ./app/courses/[id]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/courses/[id]/page.tsx [Client Component SSR]
+    ./app/courses/[id]/page.tsx [Server Component]
+[00:07:35.279] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:07:38.652] Server  LOG      ✓ Compiled in 18ms
+[00:07:40.641] Server  LOG      ✓ Compiled in 21ms
+[00:08:27.238] Server  LOG      ✓ Compiled in 18ms
+[00:08:30.687] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:08:34.720] Server  LOG      ✓ Compiled in 15ms
+[00:08:38.204] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:08:42.326] Server  LOG      ✓ Compiled in 44ms
+[00:08:45.680] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:08:49.494] Server  LOG      ✓ Compiled in 22ms
+[00:08:59.296] Server  LOG      ✓ Compiled in 33ms
+[00:09:01.743] Server  LOG      ✓ Compiled in 33ms
+[00:09:03.696] Server  LOG      ✓ Compiled in 42ms
+[00:09:05.287] Server  LOG      ✓ Compiled in 40ms
+[00:09:12.832] Server  LOG      ✓ Compiled in 27ms
+[00:09:14.793] Server  LOG      ✓ Compiled in 24ms
+[00:09:15.853] Server  LOG      ✓ Compiled in 16ms
+[00:09:24.378] Server  LOG      ✓ Compiled in 16ms
+[00:10:38.502] Server  LOG      ✓ Compiled in 15ms
+[00:11:28.189] Server  LOG      ✓ Compiled in 16ms
+[00:11:30.405] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:12:03.275] Server  LOG      ✓ Compiled in 20ms
+[00:12:05.881] Server  LOG      ✓ Compiled in 16ms
+[00:12:34.309] Server  LOG      ✓ Compiled in 26ms
+[00:12:40.667] Server  LOG      ✓ Compiled in 26ms
+[00:12:43.382] Server  LOG      ✓ Compiled in 38ms
+[00:12:45.348] Server  LOG      ✓ Compiled in 15ms
+[00:13:29.258] Server  LOG      ✓ Compiled in 16ms
+[00:13:31.795] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:13:36.531] Server  LOG      ✓ Compiled in 40ms
+[00:13:42.700] Server  LOG      ✓ Compiled in 28ms
+[00:13:46.843] Server  LOG      ✓ Compiled in 16ms
+[00:13:48.978] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:14:05.843] Server  LOG      ✓ Compiled in 34ms
+[00:14:06.564] Server  LOG      ✓ Compiled in 19ms
+[00:14:24.395] Server  LOG      ✓ Compiled in 17ms
+[00:14:32.657] Server  LOG      ✓ Compiled in 22ms
+[00:14:34.656] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:14:37.838] Server  LOG      ✓ Compiled in 14ms
+[00:14:46.714] Server  LOG      ✓ Compiled in 22ms
+[00:16:25.319] Server  LOG      ✓ Compiled in 27ms
+[00:16:29.703] Server  LOG      ✓ Compiled in 19ms
+[00:16:34.204] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:16:53.041] Server  LOG      ✓ Compiled in 17ms
+[00:16:58.246] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:17:08.809] Server  LOG      ✓ Compiled in 27ms
+[00:17:11.358] Server  LOG      ✓ Compiled in 24ms
+[00:17:12.641] Server  LOG      ✓ Compiled in 23ms
+[00:17:16.067] Server  LOG      ✓ Compiled in 19ms
+[00:17:18.294] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:18:10.803] Server  LOG      ✓ Compiled in 23ms
+[00:18:17.656] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:18:58.021] Server  LOG      ✓ Compiled in 20ms
+[00:19:23.424] Server  LOG      ✓ Compiled in 37ms
+[00:19:27.198] Server  LOG      ✓ Compiled in 39ms
+[00:19:47.626] Server  LOG      ✓ Compiled in 40ms
+[00:19:54.654] Server  LOG      ✓ Compiled in 35ms
+[00:20:04.130] Server  LOG      ✓ Compiled in 17ms
+[00:20:06.785] Server  LOG      ✓ Compiled in 15ms
+[00:20:24.782] Server  LOG      ✓ Compiled in 21ms
+[00:20:29.542] Server  LOG      ✓ Compiled in 17ms
+[00:20:51.266] Server  LOG      ✓ Compiled in 22ms
+[00:20:58.514] Server  LOG      ✓ Compiled in 25ms
+[00:21:08.782] Server  LOG      ✓ Compiled in 25ms
+[00:21:30.292] Server  LOG      ✓ Compiled in 26ms
+[00:21:54.850] Server  LOG      ✓ Compiled in 28ms
+[00:21:56.215] Server  LOG      ✓ Compiled in 24ms
+[00:22:05.916] Server  LOG      ✓ Compiled in 17ms
+[00:22:21.102] Server  LOG      ✓ Compiled in 20ms
+[00:22:23.245] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:22:24.570] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:22:25.175] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:22:30.086] Server  LOG      ✓ Compiled in 22ms
+[00:22:35.072] Server  LOG      ✓ Compiled in 16ms
+[00:22:37.395] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:22:41.231] Server  LOG      ✓ Compiled in 22ms
+[00:23:03.324] Server  LOG      ✓ Compiled in 21ms
+[00:23:09.255] Server  LOG      ✓ Compiled in 19ms
+[00:23:31.885] Server  LOG      ✓ Compiled in 30ms
+[00:23:31.990] Browser ERROR   ./app/courses/[id]/page.tsx:448:27
+Parsing ecmascript source code failed
+  446 |                                   ></Link>
+  447 |                         <Card
+> 448 |                           key={topic.id}
+      |                           ^^^
+  449 |                           className={cn(
+  450 |                             "transition-colors",
+  451 |                             isCompleted
+
+Expected '</', got 'key'
+
+Import traces:
+  Client Component Browser:
+    ./app/courses/[id]/page.tsx [Client Component Browser]
+    ./app/courses/[id]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/courses/[id]/page.tsx [Client Component SSR]
+    ./app/courses/[id]/page.tsx [Server Component]
+[00:23:35.781] Server  LOG      ✓ Compiled in 25ms
+[00:23:35.884] Browser ERROR   ./app/courses/[id]/page.tsx:501:17
+Parsing ecmascript source code failed
+  499 |                     })}
+  500 |                   </div>
+> 501 |                 </ScrollArea>
+      |                 ^
+  502 |               </>
+  503 |             )}
+  504 |           </div>
+
+Expression expected
+
+Import traces:
+  Client Component Browser:
+    ./app/courses/[id]/page.tsx [Client Component Browser]
+    ./app/courses/[id]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/courses/[id]/page.tsx [Client Component SSR]
+    ./app/courses/[id]/page.tsx [Server Component]
+[00:23:35.884] Browser ERROR   ./app/courses/[id]/page.tsx:499:23
+Parsing ecmascript source code failed
+  497 |                         </Card>
+  498 |                       );
+> 499 |                     })}
+      |                       ^
+  500 |                   </div>
+  501 |                 </ScrollArea>
+  502 |               </>
+
+Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+
+Import traces:
+  Client Component Browser:
+    ./app/courses/[id]/page.tsx [Client Component Browser]
+    ./app/courses/[id]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/courses/[id]/page.tsx [Client Component SSR]
+    ./app/courses/[id]/page.tsx [Server Component]
+[00:23:35.884] Browser ERROR   ./app/courses/[id]/page.tsx:501:18
+Parsing ecmascript source code failed
+  499 |                     })}
+  500 |                   </div>
+> 501 |                 </ScrollArea>
+      |                  ^^^^^^^^^^^^
+  502 |               </>
+  503 |             )}
+  504 |           </div>
+
+Unterminated regexp literal
+
+Import traces:
+  Client Component Browser:
+    ./app/courses/[id]/page.tsx [Client Component Browser]
+    ./app/courses/[id]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/courses/[id]/page.tsx [Client Component SSR]
+    ./app/courses/[id]/page.tsx [Server Component]
+[00:23:44.312] Browser ERROR   Each child in a list should have a unique "key" prop.%s%s See https://react.dev/link/warning-keys for more information. 
+
+Check the render method of `CourseDashboardPage`. 
+[00:23:44.312] Browser ERROR   In HTML, %s cannot be a descendant of <%s>.
+This will cause a hydration error.%s <a> a 
+
+  ...
+    <main className="flex-1 ove...">
+      <div className="h-full fle...">
+        <div>
+        <ScrollArea className="flex-1">
+          <ScrollArea data-slot="scroll-area" className="relative f...">
+            <ScrollAreaProvider scope={undefined} type="hover" dir="ltr" scrollHideDelay={600} ...>
+              <Primitive.div dir="ltr" data-slot="scroll-area" className="relative f..." ref={function} ...>
+                <div dir="ltr" data-slot="scroll-area" className="relative f..." style={{position:"...", ...}} ...>
+                  <ScrollAreaViewport data-slot="scroll-are..." className="focus-visi...">
+                    <style>
+                    <Primitive.div data-radix-scroll-area-viewport="" data-slot="scroll-are..." className="focus-visi..." ...>
+                      <div data-radix-scroll-area-viewport="" data-slot="scroll-are..." className="focus-visi..." ...>
+                        <div ref={function bound dispatchSetState} style={{minWidth:"...", ...}}>
+                          <div className="p-3 md:p-4...">
+                            <LinkComponent href="/courses/8...">
+>                             <a
+>                               ref={function}
+>                               onClick={function onClick}
+>                               onMouseEnter={function onMouseEnter}
+>                               onTouchStart={function onTouchStart}
+>                               href="/courses/866e6aea-d9fc-4416-a753-ab38f1f79d22/topics/fb07319f-3ba4-428a-a2c8-842..."
+>                             >
+                                ...
+                                  <div className="flex flex-...">
+                                    <h3>
+                                    <LinkComponent href="/courses/8...">
+>                                     <a
+>                                       ref={function}
+>                                       onClick={function onClick}
+>                                       onMouseEnter={function onMouseEnter}
+>                                       onTouchStart={function onTouchStart}
+>                                       href="/courses/866e6aea-d9fc-4416-a753-ab38f1f79d22/topics/fb07319f-3ba4-428a-..."
+>                                     >
+                            ...
+                  ...
+
+[00:23:44.312] Browser ERROR   <%s> cannot contain a nested %s.
+See this log for the ancestor stack trace. a <a>
+[00:23:53.848] Server  LOG      ✓ Compiled in 17ms
+[00:23:53.951] Browser ERROR   ./app/courses/[id]/page.tsx:485:44
+Parsing ecmascript source code failed
+  483 |                                         <ChevronRight className="h-4 w-4 ml-1" />
+  484 |                                       </Button>
+> 485 |                                     </Link>
+      |                                            ^
+> 486 |                                   </div>
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  487 |                                   <p className="text-xs md:text-sm text-muted-foreground mt-1 line-clamp-2">
+  488 |                                     {topic.description}
+  489 |                                   </p>
+
+Expected '</', got 'jsx text (
+                                  )'
+
+Import traces:
+  Client Component Browser:
+    ./app/courses/[id]/page.tsx [Client Component Browser]
+    ./app/courses/[id]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/courses/[id]/page.tsx [Client Component SSR]
+    ./app/courses/[id]/page.tsx [Server Component]
+[00:23:56.115] Server  LOG      ✓ Compiled in 22ms
+[00:23:58.112] Server  LOG      ✓ Compiled in 18ms
+[00:24:11.442] Server  LOG      ✓ Compiled in 35ms
+[00:24:17.626] Server  LOG      ✓ Compiled in 35ms
+[00:24:21.045] Server  LOG      ✓ Compiled in 29ms
+[00:24:24.021] Server  LOG      ✓ Compiled in 30ms
+[00:24:43.765] Server  LOG      ✓ Compiled in 40ms
+[00:24:46.322] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:24:46.439] Browser ERROR   Each child in a list should have a unique "key" prop.%s%s See https://react.dev/link/warning-keys for more information. 
+
+Check the render method of `CourseDashboardPage`. 
+[00:24:49.240] Server  LOG      ✓ Compiled in 34ms
+[00:24:51.022] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:24:51.138] Browser ERROR   Each child in a list should have a unique "key" prop.%s%s See https://react.dev/link/warning-keys for more information. 
+
+Check the render method of `CourseDashboardPage`. 
+[00:24:55.655] Server  LOG      ✓ Compiled in 28ms
+[00:24:57.290] Server  LOG      ✓ Compiled in 23ms
+[00:24:59.868] Server  LOG      ✓ Compiled in 36ms
+[00:25:02.400] Server  LOG      ✓ Compiled in 19ms
+[00:25:03.599] Server  LOG      ✓ Compiled in 37ms
+[00:25:05.404] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:25:05.517] Browser ERROR   Each child in a list should have a unique "key" prop.%s%s See https://react.dev/link/warning-keys for more information. 
+
+Check the render method of `CourseDashboardPage`. 
+[00:25:14.951] Server  LOG      ✓ Compiled in 19ms
+[00:25:20.429] Server  LOG      ✓ Compiled in 28ms
+[00:25:24.470] Server  LOG      ✓ Compiled in 19ms
+[00:25:30.575] Server  LOG      ✓ Compiled in 15ms
+[00:25:36.383] Server  LOG      ✓ Compiled in 24ms
+[00:25:36.487] Browser ERROR   ./app/courses/[id]/page.tsx:495:26
+Parsing ecmascript source code failed
+  493 |                             </Card>
+  494 |                           </Link>
+> 495 |                         </div>
+      |                          ^^^^^
+  496 |                       );
+  497 |                     })}
+  498 |                   </div>
+
+Unterminated regexp literal
+
+Import traces:
+  Client Component Browser:
+    ./app/courses/[id]/page.tsx [Client Component Browser]
+    ./app/courses/[id]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/courses/[id]/page.tsx [Client Component SSR]
+    ./app/courses/[id]/page.tsx [Server Component]
+[00:25:49.255] Server  LOG      ✓ Compiled in 14ms
+[00:25:53.246] Server  LOG      ✓ Compiled in 24ms
+[00:25:55.390] Server  LOG      ✓ Compiled in 14ms
+[00:25:58.753] Server  LOG      ✓ Compiled in 20ms
+[00:26:33.465] Server  LOG      ✓ Compiled in 33ms
+[00:26:34.395] Server  LOG      ✓ Compiled in 22ms
+[00:26:57.957] Server  LOG      ✓ Compiled in 25ms
+[00:26:58.062] Browser ERROR   ./app/courses/[id]/page.tsx:479:46
+Parsing ecmascript source code failed
+  477 |                                       O'qish
+  478 |                                       <ChevronRight className="h-4 w-4 ml-1" />
+> 479 |                                     </Button>
+      |                                              ^
+> 480 |                                   </div>
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  481 |                                   <p className="text-xs md:text-sm text-muted-foreground mt-1 line-clamp-2">
+  482 |                                     {topic.description}
+  483 |                                   </p>
+
+Expected '</', got 'jsx text (
+                                  )'
+
+Import traces:
+  Client Component Browser:
+    ./app/courses/[id]/page.tsx [Client Component Browser]
+    ./app/courses/[id]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/courses/[id]/page.tsx [Client Component SSR]
+    ./app/courses/[id]/page.tsx [Server Component]
+[00:27:03.837] Server  LOG      ✓ Compiled in 17ms
+[00:27:14.373] Server  LOG      ✓ Compiled in 22ms
+[00:27:17.766] Server  LOG      ✓ Compiled in 26ms
+[00:27:20.971] Server  LOG      ✓ Compiled in 24ms
+[00:27:27.433] Server  LOG      ✓ Compiled in 16ms
+[00:27:31.523] Server  LOG      ✓ Compiled in 16ms
+[00:27:34.424] Server  LOG      ✓ Compiled in 15ms
+[00:27:36.669] Server  LOG      ✓ Compiled in 15ms
+[00:28:35.664] Server  LOG      ✓ Compiled in 27ms
+[00:28:37.993] Server  LOG      ✓ Compiled in 29ms
+[00:28:42.225] Server  LOG      ✓ Compiled in 18ms
+[00:28:44.978] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:28:45.100] Browser ERROR   Each child in a list should have a unique "key" prop.%s%s See https://react.dev/link/warning-keys for more information. 
+
+Check the render method of `CourseDashboardPage`. 
+[00:30:44.315] Server  LOG      ✓ Compiled in 24ms
+[00:30:47.270] Server  LOG      ✓ Compiled in 28ms
+[00:31:21.926] Server  LOG      ✓ Compiled in 20ms
+[00:31:23.994] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:31:24.118] Browser ERROR   Each child in a list should have a unique "key" prop.%s%s See https://react.dev/link/warning-keys for more information. 
+
+Check the render method of `CourseDashboardPage`. 
+[00:31:25.455] Server  LOG      ✓ Compiled in 21ms
+[00:31:35.417] Server  LOG      ✓ Compiled in 54ms
+[00:31:38.380] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:31:38.485] Browser ERROR   Each child in a list should have a unique "key" prop.%s%s See https://react.dev/link/warning-keys for more information. 
+
+Check the render method of `CourseDashboardPage`. 
+[00:31:41.859] Server  LOG      ✓ Compiled in 45ms
+[00:31:43.828] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:31:43.942] Browser ERROR   Each child in a list should have a unique "key" prop.%s%s See https://react.dev/link/warning-keys for more information. 
+
+Check the render method of `CourseDashboardPage`. 
+[00:32:02.947] Server  LOG      ✓ Compiled in 17ms
+[00:32:06.477] Server  LOG      ✓ Compiled in 16ms
+[00:32:09.920] Server  LOG      ✓ Compiled in 15ms
+[00:32:15.557] Server  LOG      ✓ Compiled in 35ms
+[00:32:16.726] Server  LOG      ✓ Compiled in 21ms
+[00:32:22.471] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+
+If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
+
+For more information, see https://radix-ui.com/primitives/docs/components/dialog
+[00:32:22.471] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:32:22.471] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+
+If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
+
+For more information, see https://radix-ui.com/primitives/docs/components/dialog
+[00:32:22.471] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:32:24.761] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+
+If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
+
+For more information, see https://radix-ui.com/primitives/docs/components/dialog
+[00:32:24.761] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:32:24.761] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+
+If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
+
+For more information, see https://radix-ui.com/primitives/docs/components/dialog
+[00:32:24.761] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:32:29.621] Server  LOG      ✓ Compiled in 41ms
+[00:32:32.985] Server  LOG      ✓ Compiled in 46ms
+[00:32:37.688] Server  LOG      ✓ Compiled in 20ms
+[00:32:44.376] Server  LOG      ✓ Compiled in 37ms
+[00:32:54.777] Server  LOG      ✓ Compiled in 46ms
+[00:33:07.369] Server  LOG      ✓ Compiled in 36ms
+[00:33:10.988] Server  LOG      ✓ Compiled in 31ms
+[00:33:13.277] Server  LOG      ✓ Compiled in 40ms
+[00:33:15.865] Server  LOG      ✓ Compiled in 42ms
+[00:33:19.374] Server  LOG      ✓ Compiled in 17ms
+[00:34:13.320] Server  LOG      ✓ Compiled in 19ms
+[00:34:20.861] Server  LOG      ✓ Compiled in 41ms
+[00:34:21.108] Server  LOG      ✓ Compiled in 50ms
+[00:34:27.339] Server  LOG      ✓ Compiled in 30ms
+[00:34:28.932] Server  LOG      ✓ Compiled in 15ms
+[00:34:33.214] Server  LOG      ✓ Compiled in 19ms
+[00:34:39.866] Server  LOG      ✓ Compiled in 38ms
+[00:34:45.231] Server  LOG      ✓ Compiled in 18ms
+[00:34:55.722] Server  LOG      ✓ Compiled in 36ms
+[00:34:59.603] Server  LOG      ✓ Compiled in 29ms
+[00:34:59.709] Browser ERROR   ./app/courses/[id]/page.tsx:373:28
+Parsing ecmascript source code failed
+  371 |               {sidebarCollapsed ? (
+  372 |                 <div></div>
+> 373 |                 <PanelLeft className="h-4 w-4" />
+      |                            ^^^^^^^^^
+  374 |               ) : (
+  375 |                 <PanelLeftClose className="h-4 w-4" />
+  376 |               )}
+
+Expected '</', got 'className'
+
+Import traces:
+  Client Component Browser:
+    ./app/courses/[id]/page.tsx [Client Component Browser]
+    ./app/courses/[id]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/courses/[id]/page.tsx [Client Component SSR]
+    ./app/courses/[id]/page.tsx [Server Component]
+[00:35:03.269] Browser ERROR   ./app/courses/[id]/page.tsx:373:28
+Parsing ecmascript source code failed
+  371 |               {sidebarCollapsed ? (
+  372 |                 <div className="flex items-center justify-center"></div>
+> 373 |                 <PanelLeft className="h-4 w-4" />
+      |                            ^^^^^^^^^
+  374 |               ) : (
+  375 |                 <PanelLeftClose className="h-4 w-4" />
+  376 |               )}
+
+Expected '</', got 'className'
+
+Import traces:
+  Client Component Browser:
+    ./app/courses/[id]/page.tsx [Client Component Browser]
+    ./app/courses/[id]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/courses/[id]/page.tsx [Client Component SSR]
+    ./app/courses/[id]/page.tsx [Server Component]
+[00:35:06.917] Server  LOG      ✓ Compiled in 18ms
+[00:35:09.350] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:35:09.466] Browser ERROR   Each child in a list should have a unique "key" prop.%s%s See https://react.dev/link/warning-keys for more information. 
+
+Check the render method of `CourseDashboardPage`. 
+[00:35:15.734] Server  LOG      ✓ Compiled in 28ms
+[00:35:43.146] Server  LOG      ✓ Compiled in 15ms
+[00:35:47.817] Server  LOG      ✓ Compiled in 18ms
+[00:35:53.405] Server  LOG      ✓ Compiled in 18ms
+[00:36:46.435] Server  LOG      ✓ Compiled in 18ms
+[00:36:49.266] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:36:49.384] Browser ERROR   Each child in a list should have a unique "key" prop.%s%s See https://react.dev/link/warning-keys for more information. 
+
+Check the render method of `CourseDashboardPage`. 
+[00:36:56.151] Server  LOG      ✓ Compiled in 33ms
+[00:36:58.289] Server  LOG      ✓ Compiled in 21ms
+[00:37:08.095] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+
+If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
+
+For more information, see https://radix-ui.com/primitives/docs/components/dialog
+[00:37:08.095] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:37:08.095] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+
+If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
+
+For more information, see https://radix-ui.com/primitives/docs/components/dialog
+[00:37:08.095] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:37:12.091] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+
+If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
+
+For more information, see https://radix-ui.com/primitives/docs/components/dialog
+[00:37:12.091] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:37:12.091] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+
+If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
+
+For more information, see https://radix-ui.com/primitives/docs/components/dialog
+[00:37:12.091] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:37:17.470] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+
+If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
+
+For more information, see https://radix-ui.com/primitives/docs/components/dialog
+[00:37:17.470] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:37:17.470] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+
+If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
+
+For more information, see https://radix-ui.com/primitives/docs/components/dialog
+[00:37:17.470] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:38:50.661] Server  LOG      ✓ Compiled in 19ms
+[00:39:07.279] Server  LOG      ✓ Compiled in 44ms
+[00:39:12.830] Server  LOG      ✓ Compiled in 22ms
+[00:39:17.303] Server  LOG      ✓ Compiled in 44ms
+[00:39:27.533] Server  LOG      ✓ Compiled in 24ms
+[00:39:39.679] Server  LOG      ✓ Compiled in 37ms
+[00:41:14.797] Server  LOG      ✓ Compiled in 26ms
+[00:41:25.956] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:41:27.269] Browser ERROR   Each child in a list should have a unique "key" prop.%s%s See https://react.dev/link/warning-keys for more information. 
+
+Check the render method of `CourseDashboardPage`. 
+[00:41:28.090] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:41:29.102] Browser ERROR   Each child in a list should have a unique "key" prop.%s%s See https://react.dev/link/warning-keys for more information. 
+
+Check the render method of `CourseDashboardPage`. 
+[00:41:30.046] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:42:50.565] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:42:51.720] Browser ERROR   Each child in a list should have a unique "key" prop.%s%s See https://react.dev/link/warning-keys for more information. 
+
+Check the render method of `CourseDashboardPage`. 
+[00:42:52.982] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:42:54.011] Browser ERROR   Each child in a list should have a unique "key" prop.%s%s See https://react.dev/link/warning-keys for more information. 
+
+Check the render method of `CourseDashboardPage`. 
+[00:43:39.630] Server  LOG      ✓ Compiled in 19ms
+[00:43:43.830] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:43:43.949] Browser ERROR   Each child in a list should have a unique "key" prop.%s%s See https://react.dev/link/warning-keys for more information. 
+
+Check the render method of `CourseDashboardPage`. 
+[00:44:20.571] Server  LOG      ✓ Compiled in 19ms
+[00:44:36.197] Server  LOG      ✓ Compiled in 28ms
+[00:44:36.301] Browser ERROR   ./app/courses/[id]/page.tsx:490:26
+Parsing ecmascript source code failed
+  488 |                             </CardContent>
+  489 |                           </Card>
+> 490 |                         </Link>
+      |                          ^^^^^^
+  491 |                       );
+  492 |                     })}
+  493 |                   </div>
+
+Unterminated regexp literal
+
+Import traces:
+  Client Component Browser:
+    ./app/courses/[id]/page.tsx [Client Component Browser]
+    ./app/courses/[id]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/courses/[id]/page.tsx [Client Component SSR]
+    ./app/courses/[id]/page.tsx [Server Component]
+[00:44:40.380] Browser ERROR   ./app/courses/[id]/page.tsx:491:26
+Parsing ecmascript source code failed
+  489 |                             </CardContent>
+  490 |                           </Card>
+> 491 |                         </Link>
+      |                          ^^^^^^
+  492 |                       );
+  493 |                     })}
+  494 |                   </div>
+
+Unterminated regexp literal
+
+Import traces:
+  Client Component Browser:
+    ./app/courses/[id]/page.tsx [Client Component Browser]
+    ./app/courses/[id]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/courses/[id]/page.tsx [Client Component SSR]
+    ./app/courses/[id]/page.tsx [Server Component]
+[00:44:43.943] Server  LOG      ✓ Compiled in 20ms
+[00:44:44.046] Browser ERROR   ./app/courses/[id]/page.tsx:488:32
+Parsing ecmascript source code failed
+  486 |                                   </div>
+  487 |                                 </div>
+> 488 |                         </Link>
+      |                                ^
+> 489 |
+      | ^
+> 490 |                               </div>
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  491 |                             </CardContent>
+  492 |                           </Card>
+  493 |                       );
+
+Expected '</', got 'jsx text (
+
+                              )'
+
+Import traces:
+  Client Component Browser:
+    ./app/courses/[id]/page.tsx [Client Component Browser]
+    ./app/courses/[id]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/courses/[id]/page.tsx [Client Component SSR]
+    ./app/courses/[id]/page.tsx [Server Component]
+[00:44:49.738] Browser ERROR   ./app/courses/[id]/page.tsx:488:40
+Parsing ecmascript source code failed
+  486 |                                   </div>
+  487 |                                 </div>
+> 488 |                                 </Link>
+      |                                        ^
+> 489 |
+      | ^
+> 490 |                               </div>
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  491 |                             </CardContent>
+  492 |                           </Card>
+  493 |                       );
+
+Expected '</', got 'jsx text (
+
+                              )'
+
+Import traces:
+  Client Component Browser:
+    ./app/courses/[id]/page.tsx [Client Component Browser]
+    ./app/courses/[id]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/courses/[id]/page.tsx [Client Component SSR]
+    ./app/courses/[id]/page.tsx [Server Component]
+[00:44:50.623] Browser ERROR   ./app/courses/[id]/page.tsx:488:42
+Parsing ecmascript source code failed
+  486 |                                   </div>
+  487 |                                 </div>
+> 488 |                                   </Link>
+      |                                          ^
+> 489 |
+      | ^
+> 490 |                               </div>
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  491 |                             </CardContent>
+  492 |                           </Card>
+  493 |                       );
+
+Expected '</', got 'jsx text (
+
+                              )'
+
+Import traces:
+  Client Component Browser:
+    ./app/courses/[id]/page.tsx [Client Component Browser]
+    ./app/courses/[id]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/courses/[id]/page.tsx [Client Component SSR]
+    ./app/courses/[id]/page.tsx [Server Component]
+[00:44:57.620] Server  LOG      ✓ Compiled in 17ms
+[00:45:22.486] Server  LOG      ✓ Compiled in 22ms
+[00:45:23.774] Server  LOG      ✓ Compiled in 27ms
+[00:45:24.808] Server  LOG      ✓ Compiled in 35ms
+[00:45:31.573] Server  LOG      ✓ Compiled in 26ms
+[00:45:31.677] Browser ERROR   ./app/courses/[id]/page.tsx:489:39
+Parsing ecmascript source code failed
+  487 |                                     </p>
+  488 |                                   </div>
+> 489 |                                 </div>
+      |                                       ^
+> 490 |                               </Link>
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  491 |                             </div>
+  492 |                           </CardContent>
+  493 |                         </Card>
+
+Expected '</', got 'jsx text (
+                              )'
+
+Import traces:
+  Client Component Browser:
+    ./app/courses/[id]/page.tsx [Client Component Browser]
+    ./app/courses/[id]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/courses/[id]/page.tsx [Client Component SSR]
+    ./app/courses/[id]/page.tsx [Server Component]
+[00:45:56.183] Server  LOG      ✓ Compiled in 18ms
+[00:46:04.434] Server  LOG      ✓ Compiled in 29ms
+[00:46:05.937] Server  LOG      ✓ Compiled in 21ms
+[00:46:23.251] Server  LOG      ✓ Compiled in 21ms
+[00:46:28.429] Server  LOG      ✓ Compiled in 19ms
+[00:46:33.116] Server  LOG      ✓ Compiled in 33ms
+[00:46:33.571] Server  LOG      ✓ Compiled in 35ms
+[00:46:37.025] Server  LOG      ✓ Compiled in 22ms
+[00:46:42.585] Server  LOG      ✓ Compiled in 34ms
+[00:47:34.960] Server  LOG      ✓ Compiled in 31ms
+[00:47:36.462] Server  LOG      ✓ Compiled in 44ms
+[00:47:43.720] Server  LOG      ✓ Compiled in 17ms
+[00:47:58.243] Server  LOG      ✓ Compiled in 19ms
+[00:48:00.975] Server  LOG      ✓ Compiled in 17ms
+[00:48:06.738] Server  LOG      ✓ Compiled in 24ms
+[00:48:08.262] Server  LOG      ✓ Compiled in 15ms
+[00:48:31.597] Server  LOG      ✓ Compiled in 19ms
+[00:48:40.866] Server  LOG      ✓ Compiled in 19ms
+[00:48:47.920] Server  LOG      ✓ Compiled in 20ms
+[00:48:57.311] Server  LOG      ✓ Compiled in 19ms
+[00:49:15.783] Server  LOG      ✓ Compiled in 37ms
+[00:49:16.993] Server  LOG      ✓ Compiled in 17ms
+[00:49:53.228] Server  LOG      ✓ Compiled in 30ms
+[00:49:53.332] Browser ERROR   ./app/courses/[id]/page.tsx:478:55
+Parsing ecmascript source code failed
+  476 |                                       {index + 1}. {topic.title}
+  477 |                                     </h3>
+> 478 |                                     <p className={cn()"text-xs md:text-sm text-muted-foreground mt-1 line-clamp-2"}>
+      |                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  479 |                                       {topic.description}
+  480 |                                     </p>
+  481 |                                   </div>
+
+Expected '</', got 'string literal (text-xs md:text-sm text-muted-foreground mt-1 line-clamp-2, "text-xs md:text-sm text-muted-foreground mt-1 line-clamp-2")'
+
+Import traces:
+  Client Component Browser:
+    ./app/courses/[id]/page.tsx [Client Component Browser]
+    ./app/courses/[id]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/courses/[id]/page.tsx [Client Component SSR]
+    ./app/courses/[id]/page.tsx [Server Component]
+[00:49:58.492] Server  LOG      ✓ Compiled in 17ms
+[00:50:10.250] Server  LOG      ✓ Compiled in 17ms
+[00:51:21.514] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+
+If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
+
+For more information, see https://radix-ui.com/primitives/docs/components/dialog
+[00:51:21.514] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:51:21.514] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+
+If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
+
+For more information, see https://radix-ui.com/primitives/docs/components/dialog
+[00:51:21.514] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:52:18.030] Server  LOG      ✓ Compiled in 24ms
+[00:52:18.132] Browser ERROR   ./app/courses/[id]/topics/[topicId]/page.tsx:451:12
+Parsing ecmascript source code failed
+  449 |             //   </div>
+  450 |             // </ScrollArea>
+> 451 |           )}
+      |            ^
+  452 |         </main>
+  453 |
+  454 |         {assistantOpen && (
+
+Expected '</', got '}'
+
+Import traces:
+  Client Component Browser:
+    ./app/courses/[id]/topics/[topicId]/page.tsx [Client Component Browser]
+    ./app/courses/[id]/topics/[topicId]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/courses/[id]/topics/[topicId]/page.tsx [Client Component SSR]
+    ./app/courses/[id]/topics/[topicId]/page.tsx [Server Component]
+[00:52:31.567] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:52:34.767] Server  LOG      ✓ Compiled in 39ms
+[00:52:37.648] Server  LOG      ✓ Compiled in 33ms
+[00:53:16.742] Server  LOG      ✓ Compiled in 25ms
+[00:54:20.043] Server  LOG      ✓ Compiled in 24ms
+[00:54:23.736] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:54:39.350] Server  LOG      ✓ Compiled in 27ms
+[00:54:44.069] Server  LOG      ✓ Compiled in 19ms
+[00:55:05.563] Server  LOG      ✓ Compiled in 29ms
+[00:55:20.294] Server  LOG      ✓ Compiled in 20ms
+[00:55:27.490] Server  LOG      ✓ Compiled in 22ms
+[00:55:53.767] Browser LOG     [v0] Starting course creation...
+[00:55:53.767] Browser LOG     [v0] Generated courseId: 6b0dbeaa-b56b-4288-acdf-212cc8b31f1f
+[00:55:53.767] Browser LOG     [v0] Saving course: {"createdAt":"2025-11-28T19:07:34.499Z","dailyTime":90,"id":"6b0dbeaa-b56b-4288-acdf-212cc8b31f1f","interests":["IT va texnologiya","Sog'liqni saqlash","Siyosat","Sayohat"],"language":"O'zbek tili","level":"C1","profession":"doctor","status":"generating","targetLanguage":"Rus tili","userId":"a5439165-3b8c-4c00-af46-e38191f7a941"}
+[00:55:53.767] Browser LOG     [v0] Course saved successfully
+[00:55:53.767] Browser LOG     [v0] Setting redirect URL: /courses/6b0dbeaa-b56b-4288-acdf-212cc8b31f1f/generate
+[00:55:53.767] Browser LOG     [v0] Redirecting to: /courses/6b0dbeaa-b56b-4288-acdf-212cc8b31f1f/generate
+[00:55:53.954] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:55:58.998] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
