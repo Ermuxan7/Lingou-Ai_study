@@ -117,7 +117,7 @@ export default function CourseDashboardPage() {
   }: {
     onSelect?: (module: Module) => void;
   }) => (
-    <div className="w-full p-2 space-y-1">
+    <div className="w-80 md:w-full p-2 space-y-1">
       {modules.map((module, index) => {
         const isSelected = selectedModule?.id === module.id;
         const isCompleted = isModuleCompleted(module.id);
@@ -176,7 +176,7 @@ export default function CourseDashboardPage() {
   // right-component
   const StatsPanel = () => (
     <div className="p-4 space-y-6">
-      <Card className="bg-muted/30 border-border/50">
+      <Card className="w-70 bg-muted/30 border-border/50">
         <CardHeader className="pb-2">
           <CardTitle className="text-sm">Statistika</CardTitle>
         </CardHeader>

@@ -630,6 +630,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$
 function TopicViewerPage() {
     const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRouter"])();
     const params = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useParams"])();
+    const inputRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
     const courseId = params.id;
     const topicId = params.topicId;
     const { isAuthenticated, isLoading, user } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$auth$2d$context$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useAuth"])();
@@ -746,7 +747,7 @@ function TopicViewerPage() {
     const handleAskQuestion = async ()=>{
         if (!inputMessage.trim() || !topic || !course || isAsking) return;
         const userMessage = inputMessage.trim();
-        setInputMessage("");
+        setInputMessage(""); // faqat to‘liq message keyin tozalash
         setMessages((prev)=>[
                 ...prev,
                 {
@@ -755,38 +756,57 @@ function TopicViewerPage() {
                 }
             ]);
         setIsAsking(true);
-        // Simulate AI response
-        await new Promise((resolve)=>setTimeout(resolve, 1000));
-        const mockResponses = [
-            `"${topic.title}" mavzusi bo'yicha savolingizga javob:\n\nBu mavzuda asosiy e'tibor ${topic.description.toLowerCase()} ga qaratilgan. Grammatik qoidalarni yaxshi o'zlashtirish uchun har kuni amaliyot qilishni tavsiya qilaman.\n\nQo'shimcha savollaringiz bo'lsa, bemalol so'rang!`,
-            `Yaxshi savol! "${topic.title}" mavzusida eng muhim jihat - bu qoidalarni amaliyotda qo'llash.\n\nMaslahat: Har bir yangi so'z yoki iborani kamida 5 marta yozib mashq qiling. Bu xotirada yaxshi saqlanishiga yordam beradi.`,
-            `Bu savol ko'p o'quvchilarni qiziqtiradi. "${topic.title}" ni o'rganishda quyidagilarga e'tibor bering:\n\n1. Asosiy qoidani tushunib oling\n2. Misollarni yod oling\n3. O'zingiz gaplar tuzing\n4. Kundalik muloqotda qo'llang`
-        ];
-        const randomResponse = mockResponses[Math.floor(Math.random() * mockResponses.length)];
-        // Simulate typing effect
-        let displayedText = "";
-        for(let i = 0; i < randomResponse.length; i++){
-            displayedText += randomResponse[i];
-            setMessages((prev)=>{
-                const newMessages = [
-                    ...prev
-                ];
-                if (newMessages[newMessages.length - 1]?.role === "assistant") {
-                    newMessages[newMessages.length - 1] = {
-                        role: "assistant",
-                        content: displayedText
-                    };
-                } else {
-                    newMessages.push({
-                        role: "assistant",
-                        content: displayedText
-                    });
-                }
-                return newMessages;
+        try {
+            // 👇 AI ga so‘rov yuborish
+            const res = await fetch("/api/ai-assistant", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    question: userMessage,
+                    topic,
+                    course,
+                    context: content?.explanation || ""
+                })
             });
-            await new Promise((resolve)=>setTimeout(resolve, 15));
+            const aiResponse = await res.text();
+            // AI response typing effect
+            let displayedText = "";
+            for(let i = 0; i < aiResponse.length; i++){
+                displayedText += aiResponse[i];
+                setMessages((prev)=>{
+                    const newMessages = [
+                        ...prev
+                    ];
+                    const lastMessage = newMessages[newMessages.length - 1];
+                    if (lastMessage.role === "assistant") {
+                        newMessages[newMessages.length - 1] = {
+                            ...lastMessage,
+                            content: displayedText
+                        };
+                    } else {
+                        newMessages.push({
+                            role: "assistant",
+                            content: displayedText
+                        });
+                    }
+                    return newMessages;
+                });
+                await new Promise((resolve)=>setTimeout(resolve, 15));
+            }
+        } catch (err) {
+            console.error("AI Error:", err);
+            setMessages((prev)=>[
+                    ...prev,
+                    {
+                        role: "assistant",
+                        content: "Javob topilmadi"
+                    }
+                ]);
+        } finally{
+            setIsAsking(false);
         }
-        setIsAsking(false);
     };
     const handleToggleComplete = ()=>{
         const newProgress = (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$storage$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["toggleTopicComplete"])(courseId, topicId);
@@ -817,10 +837,10 @@ function TopicViewerPage() {
     const AssistantContent = ()=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
             className: "flex flex-col h-full",
             children: [
-                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$scroll$2d$area$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["ScrollArea"], {
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     className: "flex-1 p-3",
                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "space-y-4",
+                        className: "space-y-4 scroll-auto",
                         children: [
                             messages.length === 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "text-center py-8",
@@ -829,7 +849,7 @@ function TopicViewerPage() {
                                         className: "h-12 w-12 text-muted-foreground/30 mx-auto mb-3"
                                     }, void 0, false, {
                                         fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                        lineNumber: 246,
+                                        lineNumber: 256,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -837,13 +857,13 @@ function TopicViewerPage() {
                                         children: "Mavzu bo'yicha savollaringizni bering"
                                     }, void 0, false, {
                                         fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                        lineNumber: 247,
+                                        lineNumber: 257,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                lineNumber: 245,
+                                lineNumber: 255,
                                 columnNumber: 13
                             }, this),
                             messages.map((msg, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -853,12 +873,12 @@ function TopicViewerPage() {
                                         children: msg.content
                                     }, void 0, false, {
                                         fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                        lineNumber: 260,
+                                        lineNumber: 270,
                                         columnNumber: 15
                                     }, this)
                                 }, index, false, {
                                     fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                    lineNumber: 253,
+                                    lineNumber: 263,
                                     columnNumber: 13
                                 }, this)),
                             isAsking && messages[messages.length - 1]?.role !== "assistant" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -868,32 +888,32 @@ function TopicViewerPage() {
                                         className: "h-4 w-4 animate-spin"
                                     }, void 0, false, {
                                         fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                        lineNumber: 267,
+                                        lineNumber: 277,
                                         columnNumber: 15
                                     }, this),
                                     "Javob yozilmoqda..."
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                lineNumber: 266,
+                                lineNumber: 276,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 ref: messagesEndRef
                             }, void 0, false, {
                                 fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                lineNumber: 271,
+                                lineNumber: 281,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                        lineNumber: 243,
+                        lineNumber: 253,
                         columnNumber: 9
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                    lineNumber: 242,
+                    lineNumber: 252,
                     columnNumber: 7
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -906,13 +926,14 @@ function TopicViewerPage() {
                         className: "flex gap-2",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
+                                ref: inputRef,
                                 value: inputMessage,
                                 onChange: (e)=>setInputMessage(e.target.value),
                                 placeholder: "Savol bering...",
                                 disabled: isAsking
                             }, void 0, false, {
                                 fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                lineNumber: 283,
+                                lineNumber: 293,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -923,29 +944,29 @@ function TopicViewerPage() {
                                     className: "h-4 w-4"
                                 }, void 0, false, {
                                     fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                    lineNumber: 294,
+                                    lineNumber: 305,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                lineNumber: 289,
+                                lineNumber: 300,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                        lineNumber: 276,
+                        lineNumber: 286,
                         columnNumber: 9
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                    lineNumber: 275,
+                    lineNumber: 285,
                     columnNumber: 7
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-            lineNumber: 241,
+            lineNumber: 251,
             columnNumber: 5
         }, this);
     if (isLoading || !course || !topic) {
@@ -955,12 +976,12 @@ function TopicViewerPage() {
                 className: "h-8 w-8 animate-spin text-primary"
             }, void 0, false, {
                 fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                lineNumber: 304,
+                lineNumber: 315,
                 columnNumber: 9
             }, this)
         }, void 0, false, {
             fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-            lineNumber: 303,
+            lineNumber: 314,
             columnNumber: 7
         }, this);
     }
@@ -985,17 +1006,17 @@ function TopicViewerPage() {
                                             className: "h-4 w-4"
                                         }, void 0, false, {
                                             fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                            lineNumber: 320,
+                                            lineNumber: 331,
                                             columnNumber: 17
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                        lineNumber: 315,
+                                        lineNumber: 326,
                                         columnNumber: 15
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                    lineNumber: 314,
+                                    lineNumber: 325,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1006,7 +1027,7 @@ function TopicViewerPage() {
                                             children: topic.title
                                         }, void 0, false, {
                                             fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                            lineNumber: 324,
+                                            lineNumber: 335,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1018,19 +1039,19 @@ function TopicViewerPage() {
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                            lineNumber: 327,
+                                            lineNumber: 338,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                    lineNumber: 323,
+                                    lineNumber: 334,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                            lineNumber: 313,
+                            lineNumber: 324,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1046,7 +1067,7 @@ function TopicViewerPage() {
                                             className: "h-4 w-4 md:mr-2"
                                         }, void 0, false, {
                                             fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                            lineNumber: 343,
+                                            lineNumber: 354,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1054,13 +1075,13 @@ function TopicViewerPage() {
                                             children: isCompleted ? "Tugatildi" : "Tugatish"
                                         }, void 0, false, {
                                             fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                            lineNumber: 344,
+                                            lineNumber: 355,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                    lineNumber: 334,
+                                    lineNumber: 345,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$sheet$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Sheet"], {
@@ -1077,17 +1098,17 @@ function TopicViewerPage() {
                                                     className: "h-4 w-4"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                                    lineNumber: 356,
+                                                    lineNumber: 367,
                                                     columnNumber: 19
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                                lineNumber: 351,
+                                                lineNumber: 362,
                                                 columnNumber: 17
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                            lineNumber: 350,
+                                            lineNumber: 361,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$sheet$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SheetContent"], {
@@ -1103,7 +1124,7 @@ function TopicViewerPage() {
                                                                 className: "h-4 w-4 text-primary"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                                                lineNumber: 365,
+                                                                lineNumber: 376,
                                                                 columnNumber: 21
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -1111,42 +1132,42 @@ function TopicViewerPage() {
                                                                 children: "AI Assistant"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                                                lineNumber: 366,
+                                                                lineNumber: 377,
                                                                 columnNumber: 21
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                                        lineNumber: 364,
+                                                        lineNumber: 375,
                                                         columnNumber: 19
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                                    lineNumber: 363,
+                                                    lineNumber: 374,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                     className: "flex-1 overflow-hidden",
                                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(AssistantContent, {}, void 0, false, {
                                                         fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                                        lineNumber: 372,
+                                                        lineNumber: 383,
                                                         columnNumber: 19
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                                    lineNumber: 371,
+                                                    lineNumber: 382,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                            lineNumber: 359,
+                                            lineNumber: 370,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                    lineNumber: 349,
+                                    lineNumber: 360,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -1158,35 +1179,35 @@ function TopicViewerPage() {
                                         className: "h-4 w-4"
                                     }, void 0, false, {
                                         fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                        lineNumber: 384,
+                                        lineNumber: 395,
                                         columnNumber: 17
                                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$lucide$2d$react$40$0$2e$454$2e$0_react$40$19$2e$2$2e$0$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$message$2d$circle$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__MessageCircle$3e$__["MessageCircle"], {
                                         className: "h-4 w-4"
                                     }, void 0, false, {
                                         fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                        lineNumber: 386,
+                                        lineNumber: 397,
                                         columnNumber: 17
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                    lineNumber: 377,
+                                    lineNumber: 388,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                            lineNumber: 333,
+                            lineNumber: 344,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                    lineNumber: 312,
+                    lineNumber: 323,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                lineNumber: 311,
+                lineNumber: 322,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1208,7 +1229,7 @@ function TopicViewerPage() {
                                                     className: "absolute inset-0 bg-primary/20 rounded-full animate-ping"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                                    lineNumber: 400,
+                                                    lineNumber: 411,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1217,18 +1238,18 @@ function TopicViewerPage() {
                                                         className: "h-8 w-8 text-primary animate-pulse"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                                        lineNumber: 402,
+                                                        lineNumber: 413,
                                                         columnNumber: 23
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                                    lineNumber: 401,
+                                                    lineNumber: 412,
                                                     columnNumber: 21
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                            lineNumber: 399,
+                                            lineNumber: 410,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -1236,7 +1257,7 @@ function TopicViewerPage() {
                                             children: "Kontent yaratilmoqda..."
                                         }, void 0, false, {
                                             fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                            lineNumber: 405,
+                                            lineNumber: 416,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1244,23 +1265,23 @@ function TopicViewerPage() {
                                             children: "AI sizning darajangizga mos dars tayyorlayapti"
                                         }, void 0, false, {
                                             fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                            lineNumber: 408,
+                                            lineNumber: 419,
                                             columnNumber: 19
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                    lineNumber: 398,
+                                    lineNumber: 409,
                                     columnNumber: 17
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                lineNumber: 397,
+                                lineNumber: 408,
                                 columnNumber: 15
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                            lineNumber: 396,
+                            lineNumber: 407,
                             columnNumber: 13
                         }, this) : generationError ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             className: "h-full flex items-center justify-center p-4",
@@ -1275,12 +1296,12 @@ function TopicViewerPage() {
                                                 className: "h-8 w-8 text-red-500"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                                lineNumber: 419,
+                                                lineNumber: 430,
                                                 columnNumber: 21
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                            lineNumber: 418,
+                                            lineNumber: 429,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -1288,7 +1309,7 @@ function TopicViewerPage() {
                                             children: "Xatolik yuz berdi"
                                         }, void 0, false, {
                                             fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                            lineNumber: 421,
+                                            lineNumber: 432,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1296,7 +1317,7 @@ function TopicViewerPage() {
                                             children: generationError
                                         }, void 0, false, {
                                             fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                            lineNumber: 424,
+                                            lineNumber: 435,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -1305,23 +1326,23 @@ function TopicViewerPage() {
                                             children: "Qayta urinish"
                                         }, void 0, false, {
                                             fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                            lineNumber: 427,
+                                            lineNumber: 438,
                                             columnNumber: 19
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                    lineNumber: 417,
+                                    lineNumber: 428,
                                     columnNumber: 17
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                lineNumber: 416,
+                                lineNumber: 427,
                                 columnNumber: 15
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                            lineNumber: 415,
+                            lineNumber: 426,
                             columnNumber: 13
                         }, this) : !content ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             className: "h-full flex items-center justify-center p-4",
@@ -1336,12 +1357,12 @@ function TopicViewerPage() {
                                                 className: "h-8 w-8 text-primary"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                                lineNumber: 438,
+                                                lineNumber: 449,
                                                 columnNumber: 21
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                            lineNumber: 437,
+                                            lineNumber: 448,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -1349,7 +1370,7 @@ function TopicViewerPage() {
                                             children: "Kontent mavjud emas"
                                         }, void 0, false, {
                                             fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                            lineNumber: 440,
+                                            lineNumber: 451,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1357,7 +1378,7 @@ function TopicViewerPage() {
                                             children: "Bu mavzu uchun kontent hali yaratilmagan"
                                         }, void 0, false, {
                                             fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                            lineNumber: 443,
+                                            lineNumber: 454,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1371,14 +1392,14 @@ function TopicViewerPage() {
                                                             className: "h-4 w-4"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                                            lineNumber: 448,
+                                                            lineNumber: 459,
                                                             columnNumber: 23
                                                         }, this),
                                                         "Yaratish"
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                                    lineNumber: 447,
+                                                    lineNumber: 458,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -1390,41 +1411,41 @@ function TopicViewerPage() {
                                                                 className: "mr-2 h-4 w-4"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                                                lineNumber: 453,
+                                                                lineNumber: 464,
                                                                 columnNumber: 25
                                                             }, this),
                                                             "Ortga"
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                                        lineNumber: 452,
+                                                        lineNumber: 463,
                                                         columnNumber: 23
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                                    lineNumber: 451,
+                                                    lineNumber: 462,
                                                     columnNumber: 21
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                            lineNumber: 446,
+                                            lineNumber: 457,
                                             columnNumber: 19
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                    lineNumber: 436,
+                                    lineNumber: 447,
                                     columnNumber: 17
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                lineNumber: 435,
+                                lineNumber: 446,
                                 columnNumber: 15
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                            lineNumber: 434,
+                            lineNumber: 445,
                             columnNumber: 13
                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$scroll$2d$area$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["ScrollArea"], {
                             className: "h-full",
@@ -1445,7 +1466,7 @@ function TopicViewerPage() {
                                                             className: "h-4 w-4 md:mr-1"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                                            lineNumber: 470,
+                                                            lineNumber: 481,
                                                             columnNumber: 23
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1453,13 +1474,13 @@ function TopicViewerPage() {
                                                             children: "Dars"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                                            lineNumber: 471,
+                                                            lineNumber: 482,
                                                             columnNumber: 23
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                                    lineNumber: 466,
+                                                    lineNumber: 477,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tabs$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TabsTrigger"], {
@@ -1470,7 +1491,7 @@ function TopicViewerPage() {
                                                             className: "h-4 w-4 md:mr-1"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                                            lineNumber: 477,
+                                                            lineNumber: 488,
                                                             columnNumber: 23
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1478,13 +1499,13 @@ function TopicViewerPage() {
                                                             children: "Misollar"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                                            lineNumber: 478,
+                                                            lineNumber: 489,
                                                             columnNumber: 23
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                                    lineNumber: 473,
+                                                    lineNumber: 484,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tabs$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TabsTrigger"], {
@@ -1495,7 +1516,7 @@ function TopicViewerPage() {
                                                             className: "h-4 w-4 md:mr-1"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                                            lineNumber: 484,
+                                                            lineNumber: 495,
                                                             columnNumber: 23
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1503,19 +1524,19 @@ function TopicViewerPage() {
                                                             children: "Mashqlar"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                                            lineNumber: 485,
+                                                            lineNumber: 496,
                                                             columnNumber: 23
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                                    lineNumber: 480,
+                                                    lineNumber: 491,
                                                     columnNumber: 21
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                            lineNumber: 465,
+                                            lineNumber: 476,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tabs$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TabsContent"], {
@@ -1531,12 +1552,12 @@ function TopicViewerPage() {
                                                                 children: "Tushuntirish"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                                                lineNumber: 495,
+                                                                lineNumber: 506,
                                                                 columnNumber: 25
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                                            lineNumber: 494,
+                                                            lineNumber: 505,
                                                             columnNumber: 23
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -1547,23 +1568,23 @@ function TopicViewerPage() {
                                                                     children: content?.explanation
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                                                    lineNumber: 501,
+                                                                    lineNumber: 512,
                                                                     columnNumber: 27
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                                                lineNumber: 500,
+                                                                lineNumber: 511,
                                                                 columnNumber: 25
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                                            lineNumber: 499,
+                                                            lineNumber: 510,
                                                             columnNumber: 23
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                                    lineNumber: 493,
+                                                    lineNumber: 504,
                                                     columnNumber: 21
                                                 }, this),
                                                 content?.grammar && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Card"], {
@@ -1576,12 +1597,12 @@ function TopicViewerPage() {
                                                                 children: "Grammatika"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                                                lineNumber: 511,
+                                                                lineNumber: 522,
                                                                 columnNumber: 27
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                                            lineNumber: 510,
+                                                            lineNumber: 521,
                                                             columnNumber: 25
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -1590,18 +1611,18 @@ function TopicViewerPage() {
                                                                 children: content.grammar
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                                                lineNumber: 516,
+                                                                lineNumber: 527,
                                                                 columnNumber: 27
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                                            lineNumber: 515,
+                                                            lineNumber: 526,
                                                             columnNumber: 25
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                                    lineNumber: 509,
+                                                    lineNumber: 520,
                                                     columnNumber: 23
                                                 }, this),
                                                 content?.story && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Card"], {
@@ -1614,12 +1635,12 @@ function TopicViewerPage() {
                                                                 children: "Hikoya / Dialog"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                                                lineNumber: 526,
+                                                                lineNumber: 537,
                                                                 columnNumber: 27
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                                            lineNumber: 525,
+                                                            lineNumber: 536,
                                                             columnNumber: 25
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -1628,24 +1649,24 @@ function TopicViewerPage() {
                                                                 children: content.story
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                                                lineNumber: 531,
+                                                                lineNumber: 542,
                                                                 columnNumber: 27
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                                            lineNumber: 530,
+                                                            lineNumber: 541,
                                                             columnNumber: 25
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                                    lineNumber: 524,
+                                                    lineNumber: 535,
                                                     columnNumber: 23
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                            lineNumber: 489,
+                                            lineNumber: 500,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tabs$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TabsContent"], {
@@ -1660,12 +1681,12 @@ function TopicViewerPage() {
                                                             children: "Amaliy misollar"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                                            lineNumber: 542,
+                                                            lineNumber: 553,
                                                             columnNumber: 25
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                                        lineNumber: 541,
+                                                        lineNumber: 552,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -1682,7 +1703,7 @@ function TopicViewerPage() {
                                                                                 children: index + 1
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                                                                lineNumber: 554,
+                                                                                lineNumber: 565,
                                                                                 columnNumber: 33
                                                                             }, this),
                                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1690,39 +1711,39 @@ function TopicViewerPage() {
                                                                                 children: example
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                                                                lineNumber: 557,
+                                                                                lineNumber: 568,
                                                                                 columnNumber: 33
                                                                             }, this)
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                                                        lineNumber: 553,
+                                                                        lineNumber: 564,
                                                                         columnNumber: 31
                                                                     }, this)
                                                                 }, index, false, {
                                                                     fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                                                    lineNumber: 549,
+                                                                    lineNumber: 560,
                                                                     columnNumber: 29
                                                                 }, this))
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                                            lineNumber: 547,
+                                                            lineNumber: 558,
                                                             columnNumber: 25
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                                        lineNumber: 546,
+                                                        lineNumber: 557,
                                                         columnNumber: 23
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                                lineNumber: 540,
+                                                lineNumber: 551,
                                                 columnNumber: 21
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                            lineNumber: 539,
+                                            lineNumber: 550,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tabs$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TabsContent"], {
@@ -1737,12 +1758,12 @@ function TopicViewerPage() {
                                                             children: "Mashqlar"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                                            lineNumber: 571,
+                                                            lineNumber: 582,
                                                             columnNumber: 25
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                                        lineNumber: 570,
+                                                        lineNumber: 581,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -1752,44 +1773,44 @@ function TopicViewerPage() {
                                                                 index: index
                                                             }, task.id || index, false, {
                                                                 fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                                                lineNumber: 577,
+                                                                lineNumber: 588,
                                                                 columnNumber: 27
                                                             }, this))
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                                        lineNumber: 575,
+                                                        lineNumber: 586,
                                                         columnNumber: 23
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                                lineNumber: 569,
+                                                lineNumber: 580,
                                                 columnNumber: 21
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                            lineNumber: 568,
+                                            lineNumber: 579,
                                             columnNumber: 19
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                    lineNumber: 464,
+                                    lineNumber: 475,
                                     columnNumber: 17
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                lineNumber: 463,
+                                lineNumber: 474,
                                 columnNumber: 15
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                            lineNumber: 462,
+                            lineNumber: 473,
                             columnNumber: 13
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                        lineNumber: 394,
+                        lineNumber: 405,
                         columnNumber: 9
                     }, this),
                     assistantOpen && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("aside", {
@@ -1805,7 +1826,7 @@ function TopicViewerPage() {
                                                 className: "h-4 w-4 text-primary"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                                lineNumber: 596,
+                                                lineNumber: 607,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -1813,13 +1834,13 @@ function TopicViewerPage() {
                                                 children: "AI Assistant"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                                lineNumber: 597,
+                                                lineNumber: 608,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                        lineNumber: 595,
+                                        lineNumber: 606,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -1831,48 +1852,48 @@ function TopicViewerPage() {
                                             className: "h-4 w-4"
                                         }, void 0, false, {
                                             fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                            lineNumber: 607,
+                                            lineNumber: 618,
                                             columnNumber: 17
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                        lineNumber: 601,
+                                        lineNumber: 612,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                lineNumber: 594,
+                                lineNumber: 605,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "flex-1 overflow-hidden",
                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(AssistantContent, {}, void 0, false, {
                                     fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                    lineNumber: 611,
+                                    lineNumber: 622,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                                lineNumber: 610,
+                                lineNumber: 621,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                        lineNumber: 593,
+                        lineNumber: 604,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                lineNumber: 393,
+                lineNumber: 404,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-        lineNumber: 310,
+        lineNumber: 321,
         columnNumber: 5
     }, this);
 }
@@ -1894,7 +1915,7 @@ function TaskItem({ task, index }) {
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                lineNumber: 639,
+                lineNumber: 650,
                 columnNumber: 7
             }, this),
             task.type === "multiple-choice" && task.options && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1909,12 +1930,12 @@ function TaskItem({ task, index }) {
                         children: option
                     }, optIndex, false, {
                         fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                        lineNumber: 646,
+                        lineNumber: 657,
                         columnNumber: 13
                     }, this))
             }, void 0, false, {
                 fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                lineNumber: 644,
+                lineNumber: 655,
                 columnNumber: 9
             }, this),
             (task.type === "fill-blank" || task.type === "translate") && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1928,7 +1949,7 @@ function TaskItem({ task, index }) {
                         className: "text-sm md:text-base"
                     }, void 0, false, {
                         fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                        lineNumber: 670,
+                        lineNumber: 681,
                         columnNumber: 11
                     }, this),
                     !showAnswer && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -1939,7 +1960,7 @@ function TaskItem({ task, index }) {
                         children: "Tekshirish"
                     }, void 0, false, {
                         fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                        lineNumber: 678,
+                        lineNumber: 689,
                         columnNumber: 13
                     }, this),
                     showAnswer && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$0$2e$3_$40$opentelemetry$2b$api$40$1$2e$9$2e$0_react$2d$dom$40$19$2e$2$2e$0_react$40$19$2e$2$2e$0_$5f$react$40$19$2e$2$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1947,19 +1968,19 @@ function TaskItem({ task, index }) {
                         children: isCorrect ? "To'g'ri!" : `Noto'g'ri. To'g'ri javob: ${task.answer}`
                     }, void 0, false, {
                         fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                        lineNumber: 688,
+                        lineNumber: 699,
                         columnNumber: 13
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-                lineNumber: 669,
+                lineNumber: 680,
                 columnNumber: 9
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/courses/[id]/topics/[topicId]/page.tsx",
-        lineNumber: 638,
+        lineNumber: 649,
         columnNumber: 5
     }, this);
 }

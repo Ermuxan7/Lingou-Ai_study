@@ -53,6 +53,7 @@ interface Message {
 export default function TopicViewerPage() {
   const router = useRouter();
   const params = useParams();
+  const inputRef = useRef<HTMLInputElement>(null);
   const courseId = params.id as string;
   const topicId = params.topicId as string;
   const { isAuthenticated, isLoading, user } = useAuth();
@@ -173,44 +174,53 @@ export default function TopicViewerPage() {
     if (!inputMessage.trim() || !topic || !course || isAsking) return;
 
     const userMessage = inputMessage.trim();
-    setInputMessage("");
+    setInputMessage(""); // faqat to‘liq message keyin tozalash
     setMessages((prev) => [...prev, { role: "user", content: userMessage }]);
     setIsAsking(true);
 
-    // Simulate AI response
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    const mockResponses = [
-      `"${
-        topic.title
-      }" mavzusi bo'yicha savolingizga javob:\n\nBu mavzuda asosiy e'tibor ${topic.description.toLowerCase()} ga qaratilgan. Grammatik qoidalarni yaxshi o'zlashtirish uchun har kuni amaliyot qilishni tavsiya qilaman.\n\nQo'shimcha savollaringiz bo'lsa, bemalol so'rang!`,
-      `Yaxshi savol! "${topic.title}" mavzusida eng muhim jihat - bu qoidalarni amaliyotda qo'llash.\n\nMaslahat: Har bir yangi so'z yoki iborani kamida 5 marta yozib mashq qiling. Bu xotirada yaxshi saqlanishiga yordam beradi.`,
-      `Bu savol ko'p o'quvchilarni qiziqtiradi. "${topic.title}" ni o'rganishda quyidagilarga e'tibor bering:\n\n1. Asosiy qoidani tushunib oling\n2. Misollarni yod oling\n3. O'zingiz gaplar tuzing\n4. Kundalik muloqotda qo'llang`,
-    ];
-
-    const randomResponse =
-      mockResponses[Math.floor(Math.random() * mockResponses.length)];
-
-    // Simulate typing effect
-    let displayedText = "";
-    for (let i = 0; i < randomResponse.length; i++) {
-      displayedText += randomResponse[i];
-      setMessages((prev) => {
-        const newMessages = [...prev];
-        if (newMessages[newMessages.length - 1]?.role === "assistant") {
-          newMessages[newMessages.length - 1] = {
-            role: "assistant",
-            content: displayedText,
-          };
-        } else {
-          newMessages.push({ role: "assistant", content: displayedText });
-        }
-        return newMessages;
+    try {
+      // 👇 AI ga so‘rov yuborish
+      const res = await fetch("/api/ai-assistant", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          question: userMessage,
+          topic,
+          course,
+          context: content?.explanation || "",
+        }),
       });
-      await new Promise((resolve) => setTimeout(resolve, 15));
-    }
 
-    setIsAsking(false);
+      const aiResponse = await res.text();
+
+      // AI response typing effect
+      let displayedText = "";
+      for (let i = 0; i < aiResponse.length; i++) {
+        displayedText += aiResponse[i];
+        setMessages((prev) => {
+          const newMessages = [...prev];
+          const lastMessage = newMessages[newMessages.length - 1];
+          if (lastMessage.role === "assistant") {
+            newMessages[newMessages.length - 1] = {
+              ...lastMessage,
+              content: displayedText,
+            };
+          } else {
+            newMessages.push({ role: "assistant", content: displayedText });
+          }
+          return newMessages;
+        });
+        await new Promise((resolve) => setTimeout(resolve, 15));
+      }
+    } catch (err) {
+      console.error("AI Error:", err);
+      setMessages((prev) => [
+        ...prev,
+        { role: "assistant", content: "Javob topilmadi" },
+      ]);
+    } finally {
+      setIsAsking(false);
+    }
   };
 
   const handleToggleComplete = () => {
@@ -239,8 +249,8 @@ export default function TopicViewerPage() {
 
   const AssistantContent = () => (
     <div className="flex flex-col h-full">
-      <ScrollArea className="flex-1 p-3">
-        <div className="space-y-4">
+      <div className="flex-1 p-3">
+        <div className="space-y-4 scroll-auto">
           {messages.length === 0 && (
             <div className="text-center py-8">
               <MessageCircle className="h-12 w-12 text-muted-foreground/30 mx-auto mb-3" />
@@ -270,7 +280,7 @@ export default function TopicViewerPage() {
           )}
           <div ref={messagesEndRef} />
         </div>
-      </ScrollArea>
+      </div>
 
       <div className="p-3 border-t border-border/50 mt-auto">
         <form
@@ -281,6 +291,7 @@ export default function TopicViewerPage() {
           className="flex gap-2"
         >
           <Input
+            ref={inputRef}
             value={inputMessage}
             onChange={(e) => setInputMessage(e.target.value)}
             placeholder="Savol bering..."
