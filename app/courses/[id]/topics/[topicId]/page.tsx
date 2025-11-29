@@ -1,3 +1,4 @@
+// app/courses/[id]/topics/[topicId]/page.tsx
 "use client";
 
 import { useEffect, useState, useRef } from "react";
@@ -10,6 +11,7 @@ import {
   getProgress,
   toggleTopicComplete,
   updateTopic,
+  getUserProfile,
 } from "@/lib/storage";
 import type {
   Course,
@@ -61,6 +63,11 @@ export default function TopicViewerPage() {
   const [progress, setProgress] = useState<ProgressType | null>(null);
   const [notes, setNotes] = useState("");
 
+  // Content generation
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [generationError, setGenerationError] = useState<string | null>(null);
+  const hasGeneratedRef = useRef(false);
+
   // AI Assistant
   const [assistantOpen, setAssistantOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -88,6 +95,14 @@ export default function TopicViewerPage() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  // Auto-generate content if missing
+  useEffect(() => {
+    if (topic && !content && !isGenerating && !hasGeneratedRef.current) {
+      hasGeneratedRef.current = true;
+      generateTopicContent();
+    }
+  }, [topic, content]);
+
   const loadData = () => {
     const c = getCourse(courseId);
     if (!c) {
@@ -110,6 +125,48 @@ export default function TopicViewerPage() {
     setCurrentIndex(siblings.findIndex((s) => s.id === topicId));
 
     setProgress(getProgress(courseId));
+  };
+
+  const generateTopicContent = async () => {
+    if (!topic || !course || !user) return;
+
+    setIsGenerating(true);
+    setGenerationError(null);
+
+    try {
+      const userProfile = getUserProfile();
+
+      const res = await fetch("/api/generate-topic-content", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          topic,
+          course,
+          userProfile,
+        }),
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to generate content");
+      }
+
+      const generatedContent = await res.json();
+
+      // Save content
+      const updatedTopic = {
+        ...topic,
+        content: generatedContent,
+      };
+      updateTopic(updatedTopic);
+      setTopic(updatedTopic);
+      setContent(generatedContent);
+      setNotes(generatedContent.notes || "");
+    } catch (error) {
+      console.error("Error generating content:", error);
+      setGenerationError("Kontent yaratishda xatolik yuz berdi");
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   const handleAskQuestion = async () => {
@@ -173,6 +230,7 @@ export default function TopicViewerPage() {
   const goToTopic = (direction: "prev" | "next") => {
     const newIndex = direction === "prev" ? currentIndex - 1 : currentIndex + 1;
     if (newIndex >= 0 && newIndex < siblingTopics.length) {
+      hasGeneratedRef.current = false; // Reset for next topic
       router.push(`/courses/${courseId}/topics/${siblingTopics[newIndex].id}`);
     }
   };
@@ -316,7 +374,6 @@ export default function TopicViewerPage() {
               </SheetContent>
             </Sheet>
 
-            {/* Desktop: Toggle button */}
             <Button
               variant="outline"
               size="icon"
@@ -333,11 +390,47 @@ export default function TopicViewerPage() {
         </div>
       </header>
 
-      {/* Main Content */}
       <div className="flex-1 flex overflow-hidden">
-        {/* Content Area */}
         <main className="flex-1 overflow-hidden">
-          {!content ? (
+          {isGenerating ? (
+            <div className="h-full flex items-center justify-center p-4">
+              <Card className="max-w-md w-full">
+                <CardContent className="pt-8 pb-8 text-center">
+                  <div className="relative mx-auto w-16 h-16 mb-4">
+                    <div className="absolute inset-0 bg-primary/20 rounded-full animate-ping" />
+                    <div className="relative h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center">
+                      <Sparkles className="h-8 w-8 text-primary animate-pulse" />
+                    </div>
+                  </div>
+                  <h3 className="text-lg font-medium text-foreground mb-2">
+                    Kontent yaratilmoqda...
+                  </h3>
+                  <p className="text-muted-foreground text-sm">
+                    AI sizning darajangizga mos dars tayyorlayapti
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+          ) : generationError ? (
+            <div className="h-full flex items-center justify-center p-4">
+              <Card className="max-w-md w-full">
+                <CardContent className="pt-8 pb-8 text-center">
+                  <div className="h-16 w-16 rounded-full bg-red-500/10 flex items-center justify-center mx-auto mb-4">
+                    <X className="h-8 w-8 text-red-500" />
+                  </div>
+                  <h3 className="text-lg font-medium text-foreground mb-2">
+                    Xatolik yuz berdi
+                  </h3>
+                  <p className="text-muted-foreground text-sm mb-6">
+                    {generationError}
+                  </p>
+                  <Button onClick={generateTopicContent} variant="outline">
+                    Qayta urinish
+                  </Button>
+                </CardContent>
+              </Card>
+            </div>
+          ) : !content ? (
             <div className="h-full flex items-center justify-center p-4">
               <Card className="max-w-md w-full">
                 <CardContent className="pt-8 pb-8 text-center">
@@ -350,12 +443,18 @@ export default function TopicViewerPage() {
                   <p className="text-muted-foreground text-sm mb-6">
                     Bu mavzu uchun kontent hali yaratilmagan
                   </p>
-                  <Link href={`/courses/${courseId}`}>
-                    <Button variant="outline">
-                      <ArrowLeft className="mr-2 h-4 w-4" />
-                      Kursga qaytish
+                  <div className="flex gap-2 justify-center">
+                    <Button onClick={generateTopicContent} className="gap-2">
+                      <Sparkles className="h-4 w-4" />
+                      Yaratish
                     </Button>
-                  </Link>
+                    <Link href={`/courses/${courseId}`}>
+                      <Button variant="outline">
+                        <ArrowLeft className="mr-2 h-4 w-4" />
+                        Ortga
+                      </Button>
+                    </Link>
+                  </div>
                 </CardContent>
               </Card>
             </div>
@@ -385,13 +484,6 @@ export default function TopicViewerPage() {
                       <ListChecks className="h-4 w-4 md:mr-1" />
                       <span className="hidden sm:inline">Mashqlar</span>
                     </TabsTrigger>
-                    {/* <TabsTrigger
-                      value="notes"
-                      className="text-xs px-2 py-2 md:text-sm md:px-4"
-                    >
-                      <BookOpen className="h-4 w-4 md:mr-1" />
-                      <span className="hidden sm:inline">Yozuvlar</span>
-                    </TabsTrigger> */}
                   </TabsList>
 
                   <TabsContent
@@ -491,58 +583,7 @@ export default function TopicViewerPage() {
                       </CardContent>
                     </Card>
                   </TabsContent>
-
-                  <TabsContent value="notes" className="mt-4 md:mt-6">
-                    <Card>
-                      <CardHeader className="pb-2 md:pb-4">
-                        <CardTitle className="text-base md:text-lg">
-                          Shaxsiy yozuvlar
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent className="space-y-4">
-                        <Textarea
-                          value={notes}
-                          onChange={(e) => setNotes(e.target.value)}
-                          placeholder="Bu yerga o'z yozuvlaringizni yozing..."
-                          className="min-h-[150px] md:min-h-[200px]"
-                        />
-                        <Button
-                          onClick={saveNotes}
-                          variant="secondary"
-                          className="w-full sm:w-auto"
-                        >
-                          Saqlash
-                        </Button>
-                      </CardContent>
-                    </Card>
-                  </TabsContent>
                 </Tabs>
-
-                {/* <div className="flex items-center justify-between pt-4 border-t border-border/50">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => goToTopic("prev")}
-                    disabled={currentIndex === 0}
-                    className="text-xs md:text-sm"
-                  >
-                    <ChevronLeft className="h-4 w-4 md:mr-2" />
-                    <span className="hidden sm:inline">Oldingi</span>
-                  </Button>
-                  <span className="text-xs md:text-sm text-muted-foreground">
-                    {currentIndex + 1} / {siblingTopics.length}
-                  </span>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => goToTopic("next")}
-                    disabled={currentIndex === siblingTopics.length - 1}
-                    className="text-xs md:text-sm"
-                  >
-                    <span className="hidden sm:inline">Keyingi</span>
-                    <ChevronRight className="h-4 w-4 md:ml-2" />
-                  </Button>
-                </div> */}
               </div>
             </ScrollArea>
           )}

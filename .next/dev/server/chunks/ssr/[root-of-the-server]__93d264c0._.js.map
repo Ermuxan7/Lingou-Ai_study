@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 13, "column": 0}, "map": {"version":3,"sources":["file:///Users/ermuhan/Developer/NextJs/ai-course-generation/app/courses/%5Bid%5D/generate/page.tsx"],"sourcesContent":["installHook.js"],"names":[],"mappings":"AAAA,YAAY,EAAE"}}]
+}

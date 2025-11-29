@@ -1,4 +1,6 @@
 {
+  "/api/generate-roadmap/route": "app/api/generate-roadmap/route.js",
+  "/api/generate-topic-content/route": "app/api/generate-topic-content/route.js",
   "/courses/[id]/generate/page": "app/courses/[id]/generate/page.js",
   "/courses/[id]/page": "app/courses/[id]/page.js",
   "/courses/[id]/topics/[topicId]/page": "app/courses/[id]/topics/[topicId]/page.js",

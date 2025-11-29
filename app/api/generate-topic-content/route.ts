@@ -1,50 +1,228 @@
-import { streamText } from "ai"
+// app/api/generate-topic-content/route.ts
+import Groq from "groq-sdk";
+
+const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
 export async function POST(request: Request) {
-  const { topic, course, userProfile } = await request.json()
+  try {
+    const { topic, course, userProfile } = await request.json();
 
-  const prompt = `Sen professional ${course.targetLanguage} tili o'qituvchisisan. Quyidagi mavzu uchun to'liq dars kontentini yarat.
+    // 🔍 Debug: Log the received data
+    console.log("=== GENERATE TOPIC CONTENT REQUEST ===");
+    console.log("Target Language:", course.targetLanguage);
+    console.log("Topic Title:", topic.title);
+    console.log("Level:", course.level);
 
-MAVZU: ${topic.title}
-TAVSIF: ${topic.description}
+    const profile = userProfile ?? {
+      profession: "Unknown",
+      interests: [],
+    };
 
-FOYDALANUVCHI:
-- Kasbi: ${userProfile.profession}
-- Qiziqishlari: ${userProfile.interests.join(", ")}
-- Daraja: ${course.level}
+    const userInterests = Array.isArray(profile.interests)
+      ? profile.interests
+      : [];
+    const targetLanguage = course.targetLanguage;
 
-TALABLAR:
-1. Tushuntirish - mavzuni sodda va tushunarli qilib tushuntir (3-4 paragraf)
-2. Misollar - ${userProfile.profession} kasbiga mos 5 ta amaliy misol
-3. Grammatika - asosiy grammatik qoidalar (agar kerak bo'lsa)
-4. Mashqlar - 3 ta interaktiv mashq
-5. Qisqa hikoya - mavzu bo'yicha qisqa matn (dialog yoki hikoya)
+    // 🔍 Debug: Confirm target language
+    console.log("🎯 Generating lesson in:", targetLanguage);
 
-JSON formatida javob ber:
+    const prompt = `You are a professional ${targetLanguage} language teacher. Create a complete lesson.
+
+TOPIC INFORMATION:
+- Title: ${topic.title}
+- Description: ${topic.description}
+
+STUDENT PROFILE:
+- Profession: ${profile.profession}
+- Interests: ${userInterests.length > 0 ? userInterests.join(", ") : "General"}
+- Level: ${course.level}
+
+LESSON REQUIREMENTS:
+1. Explanation (3-4 paragraphs explaining the topic)
+2. Examples (5 practical examples)
+3. Grammar rules (if applicable to this topic)
+4. Exercises (3 different types):
+   - Multiple choice question
+   - Fill-in-the-blank question
+   - Translation exercise
+5. Story (short dialog or narrative)
+
+⚠️ CRITICAL INSTRUCTION - READ CAREFULLY:
+The student is learning ${targetLanguage}.
+Therefore, ALL content MUST be in ${targetLanguage} language:
+- Explanation → write in ${targetLanguage}
+- Examples → write in ${targetLanguage}
+- Grammar rules → write in ${targetLanguage}
+- Exercise questions → write in ${targetLanguage}
+- Exercise answers → write in ${targetLanguage}
+- Story → write in ${targetLanguage}
+
+DO NOT write in English, Uzbek, Russian, or any other language.
+ONLY use ${targetLanguage} language for ALL content.
+
+${getContentExamples(targetLanguage)}
+
+Return ONLY valid JSON:
 
 {
-  "explanation": "Mavzu tushuntirishi...",
-  "examples": ["Misol 1", "Misol 2", "Misol 3", "Misol 4", "Misol 5"],
-  "grammar": "Grammatika qoidalari...",
+  "explanation": "Detailed explanation in ${targetLanguage}",
+  "examples": [
+    "Example 1 in ${targetLanguage}",
+    "Example 2 in ${targetLanguage}",
+    "Example 3 in ${targetLanguage}",
+    "Example 4 in ${targetLanguage}",
+    "Example 5 in ${targetLanguage}"
+  ],
+  "grammar": "Grammar rules in ${targetLanguage} or empty string",
   "tasks": [
     {
       "id": "1",
-      "question": "Savol matni",
+      "question": "Question in ${targetLanguage}",
       "type": "multiple-choice",
-      "options": ["A variant", "B variant", "C variant", "D variant"],
-      "answer": "To'g'ri javob"
+      "options": ["A in ${targetLanguage}", "B in ${targetLanguage}", "C in ${targetLanguage}", "D in ${targetLanguage}"],
+      "answer": "Correct answer in ${targetLanguage}"
+    },
+    {
+      "id": "2",
+      "question": "Question in ${targetLanguage}",
+      "type": "fill-blank",
+      "answer": "Answer in ${targetLanguage}"
+    },
+    {
+      "id": "3",
+      "question": "Question in ${targetLanguage}",
+      "type": "translate",
+      "answer": "Answer in ${targetLanguage}"
     }
   ],
-  "story": "Qisqa hikoya yoki dialog..."
+  "story": "Story or dialog in ${targetLanguage}"
+}`;
+
+    console.log("📝 Sending prompt to Groq...");
+
+    const response = await groq.chat.completions.create({
+      model: "llama-3.1-8b-instant",
+      messages: [
+        {
+          role: "system",
+          content: `
+            You are a professional ${targetLanguage} language teacher.
+            ALL content (module titles, descriptions, topic titles, topic descriptions, examples, tasks) MUST be in ${targetLanguage}.
+            Do NOT use English, Uzbek, Russian, or any other language.
+            Respond ONLY in VALID JSON format.
+            `,
+        },
+        { role: "user", content: prompt },
+      ],
+      temperature: 0.6,
+      max_tokens: 4000,
+    });
+
+    const text = response.choices[0]?.message?.content ?? "";
+
+    // 🔍 Debug: Log raw AI response
+    console.log(
+      "🤖 AI Raw Response (first 500 chars):",
+      text.substring(0, 500)
+    );
+
+    let content;
+    try {
+      const jsonMatch = text.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        content = JSON.parse(jsonMatch[0]);
+      } else {
+        content = JSON.parse(text);
+      }
+    } catch (err) {
+      console.error("❌ JSON parse error:", err);
+      console.error("Full AI Response:", text);
+
+      content = {
+        explanation: `Lesson content for ${topic.title}`,
+        examples: [
+          "Example 1",
+          "Example 2",
+          "Example 3",
+          "Example 4",
+          "Example 5",
+        ],
+        grammar: "",
+        tasks: [
+          {
+            id: "1",
+            question: "Question 1",
+            type: "multiple-choice",
+            options: ["A", "B", "C", "D"],
+            answer: "A",
+          },
+          {
+            id: "2",
+            question: "Question 2",
+            type: "fill-blank",
+            answer: "answer",
+          },
+          {
+            id: "3",
+            question: "Question 3",
+            type: "translate",
+            answer: "translation",
+          },
+        ],
+        story: "Story content",
+      };
+    }
+
+    // Validate structure
+    if (!content.explanation) content.explanation = "";
+    if (!Array.isArray(content.examples)) content.examples = [];
+    if (!content.grammar) content.grammar = "";
+    if (!Array.isArray(content.tasks)) content.tasks = [];
+    if (!content.story) content.story = "";
+
+    // 🔍 Debug: Log generated content sample
+    console.log("✅ Explanation length:", content.explanation.length);
+    console.log("✅ Examples count:", content.examples.length);
+    console.log("✅ First example:", content.examples[0]);
+
+    return new Response(JSON.stringify(content), {
+      headers: { "Content-Type": "application/json" },
+    });
+  } catch (error) {
+    console.error("❌ Fatal error in generate-topic-content:", error);
+    return new Response(
+      JSON.stringify({
+        error: "Failed to generate topic content",
+        details: error instanceof Error ? error.message : "Unknown error",
+      }),
+      { status: 500, headers: { "Content-Type": "application/json" } }
+    );
+  }
 }
 
-JSON:`
+function getContentExamples(language: string): string {
+  const lower = language.toLowerCase();
 
-  const result = streamText({
-    model: "openai/gpt-4o-mini",
-    prompt,
-    maxTokens: 3000,
-  })
+  if (lower.includes("english") || lower.includes("ingliz")) {
+    return `Example for English:
+{
+  "explanation": "The present simple tense is used to describe habits, general truths, and repeated actions...",
+  "examples": ["I work every day", "She speaks English fluently", "They play football on Sundays"],
+  "grammar": "Form: Subject + base verb (+ s/es for he/she/it)",
+  "tasks": [{"question": "Choose the correct form: He ___ to school every day", "type": "multiple-choice", "options": ["go", "goes", "going", "went"], "answer": "goes"}],
+  "story": "John wakes up at 7 AM every morning. He brushes his teeth and eats breakfast..."
+}`;
+  }
 
-  return result.toTextStreamResponse()
+  if (lower.includes("spanish")) {
+    return `Ejemplo para español:
+{
+  "explanation": "El presente simple se usa para describir hábitos, verdades generales y acciones repetidas...",
+  "examples": ["Trabajo todos los días", "Ella habla inglés con fluidez", "Ellos juegan fútbol los domingos"],
+  "grammar": "Forma: Sujeto + verbo conjugado",
+  "tasks": [{"question": "Elige la forma correcta: Él ___ a la escuela todos los días", "type": "multiple-choice", "options": ["ir", "va", "yendo", "fue"], "answer": "va"}]
+}`;
+  }
+
+  return `Write ALL content in ${language} language.`;
 }

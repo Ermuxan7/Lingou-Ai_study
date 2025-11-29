@@ -1,0 +1,40 @@
+import { Course } from "@/lib/types";
+
+export const mockCourses: Course[] = [
+  {
+    id: "mock-1",
+    userId: "user-1",
+    language: "English",
+    targetLanguage: "English",
+    level: "A1",
+    dailyTime: 30,
+    interests: ["Travel", "Music"],
+    profession: "Teacher",
+    status: "active",
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: "mock-2",
+    userId: "user-1",
+    language: "English",
+    targetLanguage: "French",
+    level: "B1",
+    dailyTime: 45,
+    interests: ["Cooking", "Art"],
+    profession: "Designer",
+    status: "active",
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: "mock-3",
+    userId: "user-1",
+    language: "English",
+    targetLanguage: "German",
+    level: "A2",
+    dailyTime: 20,
+    interests: ["Sports", "Technology"],
+    profession: "Engineer",
+    status: "draft",
+    createdAt: new Date().toISOString(),
+  },
+];
