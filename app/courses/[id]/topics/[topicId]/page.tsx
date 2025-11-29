@@ -44,6 +44,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { AssistantContent } from "@/components/AssistantConten";
 
 interface Message {
   role: "user" | "assistant";
@@ -247,68 +248,6 @@ export default function TopicViewerPage() {
 
   const isCompleted = progress?.completedTopics.includes(topicId) ?? false;
 
-  const AssistantContent = () => (
-    <div className="flex flex-col h-full">
-      <div className="flex-1 p-3">
-        <div className="space-y-4 scroll-auto">
-          {messages.length === 0 && (
-            <div className="text-center py-8">
-              <MessageCircle className="h-12 w-12 text-muted-foreground/30 mx-auto mb-3" />
-              <p className="text-sm text-muted-foreground">
-                Mavzu bo'yicha savollaringizni bering
-              </p>
-            </div>
-          )}
-          {messages.map((msg, index) => (
-            <div
-              key={index}
-              className={cn(
-                "p-3 rounded-lg text-sm",
-                msg.role === "user" ? "bg-primary/10 ml-4" : "bg-muted/50 mr-4"
-              )}
-            >
-              <p className="text-foreground/90 whitespace-pre-wrap">
-                {msg.content}
-              </p>
-            </div>
-          ))}
-          {isAsking && messages[messages.length - 1]?.role !== "assistant" && (
-            <div className="flex items-center gap-2 text-muted-foreground text-sm">
-              <Loader2 className="h-4 w-4 animate-spin" />
-              Javob yozilmoqda...
-            </div>
-          )}
-          <div ref={messagesEndRef} />
-        </div>
-      </div>
-
-      <div className="p-3 border-t border-border/50 mt-auto">
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            handleAskQuestion();
-          }}
-          className="flex gap-2"
-        >
-          <Input
-            ref={inputRef}
-            value={inputMessage}
-            onChange={(e) => setInputMessage(e.target.value)}
-            placeholder="Savol bering..."
-            disabled={isAsking}
-          />
-          <Button
-            type="submit"
-            size="icon"
-            disabled={isAsking || !inputMessage.trim()}
-          >
-            <Send className="h-4 w-4" />
-          </Button>
-        </form>
-      </div>
-    </div>
-  );
-
   if (isLoading || !course || !topic) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
@@ -380,7 +319,15 @@ export default function TopicViewerPage() {
                   </div>
                 </div>
                 <div className="flex-1 overflow-hidden">
-                  <AssistantContent />
+                  <AssistantContent
+                    messages={messages}
+                    isAsking={isAsking}
+                    inputMessage={inputMessage}
+                    setInputMessage={setInputMessage}
+                    handleAskQuestion={handleAskQuestion}
+                    messagesEndRef={messagesEndRef}
+                    inputRef={inputRef}
+                  />
                 </div>
               </SheetContent>
             </Sheet>
@@ -601,7 +548,7 @@ export default function TopicViewerPage() {
         </main>
 
         {assistantOpen && (
-          <aside className="w-72 xl:w-80 border-l border-border/50 bg-card/30 flex flex-col shrink-0 hidden lg:flex">
+          <aside className="w-72 xl:w-80 border-l border-border/50 bg-card/30 flex-col shrink-0 hidden lg:flex">
             <div className="p-3 border-b border-border/50 flex items-center justify-between shrink-0">
               <div className="flex items-center gap-2">
                 <Sparkles className="h-4 w-4 text-primary" />
@@ -619,7 +566,15 @@ export default function TopicViewerPage() {
               </Button>
             </div>
             <div className="flex-1 overflow-hidden">
-              <AssistantContent />
+              <AssistantContent
+                messages={messages}
+                isAsking={isAsking}
+                inputMessage={inputMessage}
+                setInputMessage={setInputMessage}
+                handleAskQuestion={handleAskQuestion}
+                messagesEndRef={messagesEndRef}
+                inputRef={inputRef}
+              />
             </div>
           </aside>
         )}

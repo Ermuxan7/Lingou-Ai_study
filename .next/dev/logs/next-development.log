@@ -1,805 +1,168 @@
-[00:00:00.486] Server  LOG      ✓ Ready in 315ms
-[00:00:05.149] Server  LOG      ○ Compiling / ...
-[00:00:38.982] Server  WARN     ⚠ [next]/internal/font/google/inter_5972bc34.module.css
-Error while requesting resource
-There was an issue requesting https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap
-
-Import trace:
-  Server Component:
-    [next]/internal/font/google/inter_5972bc34.module.css
-    [next]/internal/font/google/inter_5972bc34.js
-    ./app/layout.tsx
-
-
-[00:00:38.983] Server  WARN     ⚠ [next]/internal/font/google/inter_5972bc34.module.css
-next/font: warning:
-Failed to download `Inter` from Google Fonts. Using fallback font instead.
-
-Import trace:
-  Server Component:
-    [next]/internal/font/google/inter_5972bc34.module.css
-    [next]/internal/font/google/inter_5972bc34.js
-    ./app/layout.tsx
-
-
-[00:00:39.334] Server  WARN     ⚠ [next]/internal/font/google/inter_5972bc34.module.css
-Error while requesting resource
-There was an issue requesting https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap
-
-Import trace:
-  Server Component:
-    [next]/internal/font/google/inter_5972bc34.module.css
-    [next]/internal/font/google/inter_5972bc34.js
-    ./app/layout.tsx
-
-
-[00:00:39.335] Server  WARN     ⚠ [next]/internal/font/google/inter_5972bc34.module.css
-next/font: warning:
-Failed to download `Inter` from Google Fonts. Using fallback font instead.
-
-Import trace:
-  Server Component:
-    [next]/internal/font/google/inter_5972bc34.module.css
-    [next]/internal/font/google/inter_5972bc34.js
-    ./app/layout.tsx
-
-
-[00:00:39.644] Server  WARN     ⚠ [next]/internal/font/google/inter_5972bc34.module.css
-Error while requesting resource
-There was an issue requesting https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap
-
-Import trace:
-  Server Component:
-    [next]/internal/font/google/inter_5972bc34.module.css
-    [next]/internal/font/google/inter_5972bc34.js
-    ./app/layout.tsx
-
-
-[00:00:39.645] Server  WARN     ⚠ [next]/internal/font/google/inter_5972bc34.module.css
-next/font: warning:
-Failed to download `Inter` from Google Fonts. Using fallback font instead.
-
-Import trace:
-  Server Component:
-    [next]/internal/font/google/inter_5972bc34.module.css
-    [next]/internal/font/google/inter_5972bc34.js
-    ./app/layout.tsx
-
-
-[00:00:51.306] Server  WARN     ⚠ [next]/internal/font/google/inter_5972bc34.module.css
-Error while requesting resource
-There was an issue requesting https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap
-
-Import trace:
-  Server Component:
-    [next]/internal/font/google/inter_5972bc34.module.css
-    [next]/internal/font/google/inter_5972bc34.js
-    ./app/layout.tsx
-
-
-[00:00:51.307] Server  WARN     ⚠ [next]/internal/font/google/inter_5972bc34.module.css
-next/font: warning:
-Failed to download `Inter` from Google Fonts. Using fallback font instead.
-
-Import trace:
-  Server Component:
-    [next]/internal/font/google/inter_5972bc34.module.css
-    [next]/internal/font/google/inter_5972bc34.js
-    ./app/layout.tsx
-
-
-[00:00:51.807] Server  WARN     ⚠ [next]/internal/font/google/inter_5972bc34.module.css
-Error while requesting resource
-There was an issue requesting https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap
-
-Import trace:
-  Server Component:
-    [next]/internal/font/google/inter_5972bc34.module.css
-    [next]/internal/font/google/inter_5972bc34.js
-    ./app/layout.tsx
-
-
-[00:00:51.807] Server  WARN     ⚠ [next]/internal/font/google/inter_5972bc34.module.css
-next/font: warning:
-Failed to download `Inter` from Google Fonts. Using fallback font instead.
-
-Import trace:
-  Server Component:
-    [next]/internal/font/google/inter_5972bc34.module.css
-    [next]/internal/font/google/inter_5972bc34.js
-    ./app/layout.tsx
-
-
-[00:00:53.346] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+[00:00:00.574] Server  LOG      ✓ Ready in 387ms
+[00:00:11.897] Server  LOG      ○ Compiling / ...
+[00:00:54.073] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
 
 If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
 
 For more information, see https://radix-ui.com/primitives/docs/components/dialog
-[00:00:53.346] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:00:53.346] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+[00:00:54.073] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:00:54.073] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
 
 If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
 
 For more information, see https://radix-ui.com/primitives/docs/components/dialog
-[00:00:53.346] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:00:55.793] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+[00:00:54.073] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:08:12.243] Server  LOG      ✓ Compiled in 149ms
+[00:08:24.495] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
 
 If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
 
 For more information, see https://radix-ui.com/primitives/docs/components/dialog
-[00:00:55.793] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:00:55.793] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+[00:08:24.495] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:08:24.495] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
 
 If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
 
 For more information, see https://radix-ui.com/primitives/docs/components/dialog
-[00:00:55.793] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:01:47.655] Server  LOG      ✓ Compiled in 49ms
-[00:01:51.254] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+[00:08:24.495] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:09:48.209] Server  LOG      ✓ Compiled in 27ms
+[00:09:57.041] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
 
 If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
 
 For more information, see https://radix-ui.com/primitives/docs/components/dialog
-[00:01:51.254] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:01:51.254] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+[00:09:57.041] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:09:57.041] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
 
 If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
 
 For more information, see https://radix-ui.com/primitives/docs/components/dialog
-[00:01:51.254] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:01:55.984] Server  LOG      ✓ Compiled in 30ms
-[00:02:09.678] Server  LOG      ✓ Compiled in 43ms
-[00:02:11.682] Server  LOG      ✓ Compiled in 83ms
-[00:02:16.235] Server  LOG      ✓ Compiled in 33ms
-[00:02:21.111] Server  LOG      ✓ Compiled in 26ms
-[00:02:22.281] Server  LOG      ✓ Compiled in 94ms
-[00:02:48.144] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+[00:09:57.041] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:10:06.575] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
 
 If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
 
 For more information, see https://radix-ui.com/primitives/docs/components/dialog
-[00:02:48.144] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:02:48.144] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+[00:10:06.575] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:10:06.575] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
 
 If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
 
 For more information, see https://radix-ui.com/primitives/docs/components/dialog
-[00:02:48.144] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:02:52.584] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+[00:10:06.575] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:10:08.668] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
 
 If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
 
 For more information, see https://radix-ui.com/primitives/docs/components/dialog
-[00:02:52.584] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:02:52.584] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+[00:10:08.668] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:10:08.668] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
 
 If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
 
 For more information, see https://radix-ui.com/primitives/docs/components/dialog
-[00:02:52.584] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:03:14.708] Server  LOG      ✓ Compiled in 37ms
-[00:03:17.161] Server  LOG      ✓ Compiled in 33ms
-[00:03:28.951] Server  LOG      ✓ Compiled in 27ms
-[00:03:40.842] Server  LOG      ✓ Compiled in 81ms
-[00:03:46.873] Server  LOG      ✓ Compiled in 73ms
-[00:03:49.010] Server  LOG      ✓ Compiled in 87ms
-[00:03:52.228] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+[00:10:08.668] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:10:32.196] Server  LOG      ✓ Compiled in 21ms
+[00:10:37.705] Server  LOG      ✓ Compiled in 29ms
+[00:10:43.760] Server  LOG      ✓ Compiled in 36ms
+[00:10:48.455] Server  LOG      ✓ Compiled in 20ms
+[00:10:49.937] Server  LOG      ✓ Compiled in 20ms
+[00:10:50.031] Browser ERROR   You provided a `value` prop to a form field without an `onChange` handler. This will render a read-only field. If the field should be mutable use `defaultValue`. Otherwise, set either `onChange` or `readOnly`.
+[00:10:50.032] Browser ERROR   You provided a `value` prop to a form field without an `onChange` handler. This will render a read-only field. If the field should be mutable use `defaultValue`. Otherwise, set either `onChange` or `readOnly`.
+[00:10:59.317] Browser ERROR   You provided a `value` prop to a form field without an `onChange` handler. This will render a read-only field. If the field should be mutable use `defaultValue`. Otherwise, set either `onChange` or `readOnly`.
+[00:10:59.317] Browser ERROR   You provided a `value` prop to a form field without an `onChange` handler. This will render a read-only field. If the field should be mutable use `defaultValue`. Otherwise, set either `onChange` or `readOnly`.
+[00:10:59.317] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
 
 If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
 
 For more information, see https://radix-ui.com/primitives/docs/components/dialog
-[00:03:52.228] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:03:52.228] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+[00:10:59.317] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:10:59.317] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
 
 If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
 
 For more information, see https://radix-ui.com/primitives/docs/components/dialog
-[00:03:52.228] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:03:56.418] Server  LOG      ✓ Compiled in 28ms
-[00:04:20.582] Server  LOG      ✓ Compiled in 34ms
-[00:04:22.427] Server  LOG      ✓ Compiled in 30ms
-[00:04:26.140] Server  LOG      ✓ Compiled in 29ms
-[00:04:27.572] Server  LOG      ✓ Compiled in 32ms
-[00:04:37.039] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+[00:10:59.317] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:11:02.926] Server  LOG      ✓ Compiled in 20ms
+[00:11:04.427] Server  LOG      ✓ Compiled in 20ms
+[00:11:07.337] Server  LOG      ✓ Compiled in 22ms
+[00:14:38.200] Server  LOG      ✓ Compiled in 30ms
+[00:14:38.904] Browser ERROR   uncaughtError: ReferenceError: AssistantContent is not defined
+[00:14:41.121] Server  WARN     ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+[00:14:41.201] Server  LOG      ✓ Compiled in 35ms
+[00:15:43.201] Server  LOG      ✓ Compiled in 65ms
+[00:15:43.905] Browser ERROR   ./app/courses/[id]/topics/[topicId]/page.tsx:47:1
+Export default doesn't exist in target module
+  45 | import Link from "next/link";
+  46 | import { cn } from "@/lib/utils";
+> 47 | import AssistantContent from "@/components/AssistantConten";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  48 |
+  49 | interface Message {
+  50 |   role: "user" | "assistant";
 
-If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
-
-For more information, see https://radix-ui.com/primitives/docs/components/dialog
-[00:04:37.039] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:04:37.039] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
-
-If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
-
-For more information, see https://radix-ui.com/primitives/docs/components/dialog
-[00:04:37.039] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:04:58.170] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
-
-If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
-
-For more information, see https://radix-ui.com/primitives/docs/components/dialog
-[00:04:58.170] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:04:58.170] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
-
-If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
-
-For more information, see https://radix-ui.com/primitives/docs/components/dialog
-[00:04:58.170] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:05:12.378] Server  LOG      ✓ Compiled in 38ms
-[00:05:13.835] Server  LOG      ✓ Compiled in 28ms
-[00:05:18.176] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
-
-If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
-
-For more information, see https://radix-ui.com/primitives/docs/components/dialog
-[00:05:18.176] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:05:18.176] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
-
-If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
-
-For more information, see https://radix-ui.com/primitives/docs/components/dialog
-[00:05:18.176] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:05:21.849] Server  LOG      ✓ Compiled in 91ms
-[00:05:26.873] Server  LOG      ✓ Compiled in 80ms
-[00:05:35.483] Server  LOG      ✓ Compiled in 26ms
-[00:05:40.347] Server  LOG      ✓ Compiled in 41ms
-[00:05:43.948] Server  LOG      ✓ Compiled in 24ms
-[00:05:49.428] Server  LOG      ✓ Compiled in 28ms
-[00:05:52.839] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
-
-If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
-
-For more information, see https://radix-ui.com/primitives/docs/components/dialog
-[00:05:52.839] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:05:52.839] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
-
-If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
-
-For more information, see https://radix-ui.com/primitives/docs/components/dialog
-[00:05:52.839] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:05:58.230] Server  LOG      ✓ Compiled in 27ms
-[00:05:59.435] Server  LOG      ✓ Compiled in 76ms
-[00:06:00.610] Server  LOG      ✓ Compiled in 30ms
-[00:06:05.436] Server  LOG      ✓ Compiled in 63ms
-[00:06:15.598] Server  LOG      ✓ Compiled in 67ms
-[00:06:28.984] Server  LOG      ✓ Compiled in 42ms
-[00:06:29.086] Browser ERROR   ./app/courses/[id]/page.tsx:379:25
-Parsing ecmascript source code failed
-  377 |           </div>
-  378 |
-> 379 |           <li className=h-[calc(100vh-4rem)]">
-      |                         ^
-  380 |             {sidebarCollapsed ? (
-  381 |               // Collapsed view - only numbers
-  382 |               <div className="p-2 space-y-1">
-
-Expected '</', got 'h'
+The export default was not found in module [project]/components/AssistantConten.tsx [app-client] (ecmascript).
+Did you mean to import AssistantContent?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
 
 Import traces:
   Client Component Browser:
-    ./app/courses/[id]/page.tsx [Client Component Browser]
-    ./app/courses/[id]/page.tsx [Server Component]
+    ./app/courses/[id]/topics/[topicId]/page.tsx [Client Component Browser]
+    ./app/courses/[id]/topics/[topicId]/page.tsx [Server Component]
 
   Client Component SSR:
-    ./app/courses/[id]/page.tsx [Client Component SSR]
-    ./app/courses/[id]/page.tsx [Server Component]
-[00:06:29.291] Server  WARN     ⚠ [next]/internal/font/google/inter_5972bc34.module.css
-Error while requesting resource
-There was an issue requesting https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap
-
-Import trace:
-  Server Component:
-    [next]/internal/font/google/inter_5972bc34.module.css
-    [next]/internal/font/google/inter_5972bc34.js
-    ./app/layout.tsx
-
-
-[00:06:29.291] Server  WARN     ⚠ [next]/internal/font/google/inter_5972bc34.module.css
-next/font: warning:
-Failed to download `Inter` from Google Fonts. Using fallback font instead.
-
-Import trace:
-  Server Component:
-    [next]/internal/font/google/inter_5972bc34.module.css
-    [next]/internal/font/google/inter_5972bc34.js
-    ./app/layout.tsx
-
-
-[00:06:35.865] Server  LOG      ✓ Compiled in 39ms
-[00:06:38.655] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
-
-If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
-
-For more information, see https://radix-ui.com/primitives/docs/components/dialog
-[00:06:38.655] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:06:38.655] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
-
-If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
-
-For more information, see https://radix-ui.com/primitives/docs/components/dialog
-[00:06:38.655] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:06:44.093] Server  LOG      ✓ Compiled in 27ms
-[00:06:45.857] Server  LOG      ✓ Compiled in 32ms
-[00:06:47.280] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
-
-If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
-
-For more information, see https://radix-ui.com/primitives/docs/components/dialog
-[00:06:47.280] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:06:47.280] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
-
-If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
-
-For more information, see https://radix-ui.com/primitives/docs/components/dialog
-[00:06:47.280] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:06:53.318] Server  LOG      ✓ Compiled in 27ms
-[00:06:56.326] Server  LOG      ✓ Compiled in 74ms
-[00:06:57.904] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
-
-If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
-
-For more information, see https://radix-ui.com/primitives/docs/components/dialog
-[00:06:57.904] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:06:57.904] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
-
-If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
-
-For more information, see https://radix-ui.com/primitives/docs/components/dialog
-[00:06:57.904] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:07:01.743] Server  WARN     ⚠ [next]/internal/font/google/inter_5972bc34.module.css
-Error while requesting resource
-There was an issue requesting https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap
-
-Import trace:
-  Server Component:
-    [next]/internal/font/google/inter_5972bc34.module.css
-    [next]/internal/font/google/inter_5972bc34.js
-    ./app/layout.tsx
-
-
-[00:07:01.743] Server  WARN     ⚠ [next]/internal/font/google/inter_5972bc34.module.css
-next/font: warning:
-Failed to download `Inter` from Google Fonts. Using fallback font instead.
-
-Import trace:
-  Server Component:
-    [next]/internal/font/google/inter_5972bc34.module.css
-    [next]/internal/font/google/inter_5972bc34.js
-    ./app/layout.tsx
-
-
-[00:07:02.011] Server  WARN     ⚠ [next]/internal/font/google/inter_5972bc34.module.css
-Error while requesting resource
-There was an issue requesting https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap
-
-Import trace:
-  Server Component:
-    [next]/internal/font/google/inter_5972bc34.module.css
-    [next]/internal/font/google/inter_5972bc34.js
-    ./app/layout.tsx
-
-
-[00:07:02.011] Server  WARN     ⚠ [next]/internal/font/google/inter_5972bc34.module.css
-next/font: warning:
-Failed to download `Inter` from Google Fonts. Using fallback font instead.
-
-Import trace:
-  Server Component:
-    [next]/internal/font/google/inter_5972bc34.module.css
-    [next]/internal/font/google/inter_5972bc34.js
-    ./app/layout.tsx
-
-
-[00:07:02.011] Server  WARN     ⚠ [next]/internal/font/google/inter_5972bc34.module.css
-Error while requesting resource
-There was an issue requesting https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap
-
-Import trace:
-  Server Component:
-    [next]/internal/font/google/inter_5972bc34.module.css
-    [next]/internal/font/google/inter_5972bc34.js
-    ./app/layout.tsx
-
-
-[00:07:02.011] Server  WARN     ⚠ [next]/internal/font/google/inter_5972bc34.module.css
-next/font: warning:
-Failed to download `Inter` from Google Fonts. Using fallback font instead.
-
-Import trace:
-  Server Component:
-    [next]/internal/font/google/inter_5972bc34.module.css
-    [next]/internal/font/google/inter_5972bc34.js
-    ./app/layout.tsx
-
-
-[00:07:02.011] Server  WARN     ⚠ [next]/internal/font/google/inter_5972bc34.module.css
-Error while requesting resource
-There was an issue requesting https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap
-
-Import trace:
-  Server Component:
-    [next]/internal/font/google/inter_5972bc34.module.css
-    [next]/internal/font/google/inter_5972bc34.js
-    ./app/layout.tsx
-
-
-[00:07:02.011] Server  WARN     ⚠ [next]/internal/font/google/inter_5972bc34.module.css
-next/font: warning:
-Failed to download `Inter` from Google Fonts. Using fallback font instead.
-
-Import trace:
-  Server Component:
-    [next]/internal/font/google/inter_5972bc34.module.css
-    [next]/internal/font/google/inter_5972bc34.js
-    ./app/layout.tsx
-
-
-[00:07:13.776] Server  LOG      ✓ Compiled in 32ms
-[00:07:25.885] Server  LOG      ✓ Compiled in 27ms
-[00:07:30.889] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
-
-If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
-
-For more information, see https://radix-ui.com/primitives/docs/components/dialog
-[00:07:30.889] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:07:30.889] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
-
-If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
-
-For more information, see https://radix-ui.com/primitives/docs/components/dialog
-[00:07:30.889] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:07:34.791] Server  LOG      ✓ Compiled in 39ms
-[00:07:38.348] Server  LOG      ✓ Compiled in 71ms
-[00:07:57.723] Server  LOG      ✓ Compiled in 26ms
-[00:08:05.844] Server  WARN     ⚠ [next]/internal/font/google/inter_5972bc34.module.css
-Error while requesting resource
-There was an issue requesting https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap
-
-Import trace:
-  Server Component:
-    [next]/internal/font/google/inter_5972bc34.module.css
-    [next]/internal/font/google/inter_5972bc34.js
-    ./app/layout.tsx
-
-
-[00:08:05.844] Server  WARN     ⚠ [next]/internal/font/google/inter_5972bc34.module.css
-next/font: warning:
-Failed to download `Inter` from Google Fonts. Using fallback font instead.
-
-Import trace:
-  Server Component:
-    [next]/internal/font/google/inter_5972bc34.module.css
-    [next]/internal/font/google/inter_5972bc34.js
-    ./app/layout.tsx
-
-
-[00:08:06.080] Server  WARN     ⚠ [next]/internal/font/google/inter_5972bc34.module.css
-Error while requesting resource
-There was an issue requesting https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap
-
-Import trace:
-  Server Component:
-    [next]/internal/font/google/inter_5972bc34.module.css
-    [next]/internal/font/google/inter_5972bc34.js
-    ./app/layout.tsx
-
-
-[00:08:06.080] Server  WARN     ⚠ [next]/internal/font/google/inter_5972bc34.module.css
-next/font: warning:
-Failed to download `Inter` from Google Fonts. Using fallback font instead.
-
-Import trace:
-  Server Component:
-    [next]/internal/font/google/inter_5972bc34.module.css
-    [next]/internal/font/google/inter_5972bc34.js
-    ./app/layout.tsx
-
-
-[00:08:06.081] Server  WARN     ⚠ [next]/internal/font/google/inter_5972bc34.module.css
-Error while requesting resource
-There was an issue requesting https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap
-
-Import trace:
-  Server Component:
-    [next]/internal/font/google/inter_5972bc34.module.css
-    [next]/internal/font/google/inter_5972bc34.js
-    ./app/layout.tsx
-
-
-[00:08:06.081] Server  WARN     ⚠ [next]/internal/font/google/inter_5972bc34.module.css
-next/font: warning:
-Failed to download `Inter` from Google Fonts. Using fallback font instead.
-
-Import trace:
-  Server Component:
-    [next]/internal/font/google/inter_5972bc34.module.css
-    [next]/internal/font/google/inter_5972bc34.js
-    ./app/layout.tsx
-
-
-[00:08:06.081] Server  WARN     ⚠ [next]/internal/font/google/inter_5972bc34.module.css
-Error while requesting resource
-There was an issue requesting https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap
-
-Import trace:
-  Server Component:
-    [next]/internal/font/google/inter_5972bc34.module.css
-    [next]/internal/font/google/inter_5972bc34.js
-    ./app/layout.tsx
-
-
-[00:08:06.081] Server  WARN     ⚠ [next]/internal/font/google/inter_5972bc34.module.css
-next/font: warning:
-Failed to download `Inter` from Google Fonts. Using fallback font instead.
-
-Import trace:
-  Server Component:
-    [next]/internal/font/google/inter_5972bc34.module.css
-    [next]/internal/font/google/inter_5972bc34.js
-    ./app/layout.tsx
-
-
-[00:08:07.981] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
-
-If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
-
-For more information, see https://radix-ui.com/primitives/docs/components/dialog
-[00:08:07.981] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:08:07.981] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
-
-If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
-
-For more information, see https://radix-ui.com/primitives/docs/components/dialog
-[00:08:07.981] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:08:21.724] Server  LOG      ✓ Compiled in 28ms
-[00:08:23.157] Server  LOG      ✓ Compiled in 42ms
-[00:08:25.101] Server  WARN     ⚠ [next]/internal/font/google/inter_5972bc34.module.css
-Error while requesting resource
-There was an issue requesting https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap
-
-Import trace:
-  Server Component:
-    [next]/internal/font/google/inter_5972bc34.module.css
-    [next]/internal/font/google/inter_5972bc34.js
-    ./app/layout.tsx
-
-
-[00:08:25.101] Server  WARN     ⚠ [next]/internal/font/google/inter_5972bc34.module.css
-next/font: warning:
-Failed to download `Inter` from Google Fonts. Using fallback font instead.
-
-Import trace:
-  Server Component:
-    [next]/internal/font/google/inter_5972bc34.module.css
-    [next]/internal/font/google/inter_5972bc34.js
-    ./app/layout.tsx
-
-
-[00:08:25.331] Server  WARN     ⚠ [next]/internal/font/google/inter_5972bc34.module.css
-Error while requesting resource
-There was an issue requesting https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap
-
-Import trace:
-  Server Component:
-    [next]/internal/font/google/inter_5972bc34.module.css
-    [next]/internal/font/google/inter_5972bc34.js
-    ./app/layout.tsx
-
-
-[00:08:25.331] Server  WARN     ⚠ [next]/internal/font/google/inter_5972bc34.module.css
-next/font: warning:
-Failed to download `Inter` from Google Fonts. Using fallback font instead.
-
-Import trace:
-  Server Component:
-    [next]/internal/font/google/inter_5972bc34.module.css
-    [next]/internal/font/google/inter_5972bc34.js
-    ./app/layout.tsx
-
-
-[00:08:25.331] Server  WARN     ⚠ [next]/internal/font/google/inter_5972bc34.module.css
-Error while requesting resource
-There was an issue requesting https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap
-
-Import trace:
-  Server Component:
-    [next]/internal/font/google/inter_5972bc34.module.css
-    [next]/internal/font/google/inter_5972bc34.js
-    ./app/layout.tsx
-
-
-[00:08:25.331] Server  WARN     ⚠ [next]/internal/font/google/inter_5972bc34.module.css
-next/font: warning:
-Failed to download `Inter` from Google Fonts. Using fallback font instead.
-
-Import trace:
-  Server Component:
-    [next]/internal/font/google/inter_5972bc34.module.css
-    [next]/internal/font/google/inter_5972bc34.js
-    ./app/layout.tsx
-
-
-[00:08:25.332] Server  WARN     ⚠ [next]/internal/font/google/inter_5972bc34.module.css
-Error while requesting resource
-There was an issue requesting https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap
-
-Import trace:
-  Server Component:
-    [next]/internal/font/google/inter_5972bc34.module.css
-    [next]/internal/font/google/inter_5972bc34.js
-    ./app/layout.tsx
-
-
-[00:08:25.332] Server  WARN     ⚠ [next]/internal/font/google/inter_5972bc34.module.css
-next/font: warning:
-Failed to download `Inter` from Google Fonts. Using fallback font instead.
-
-Import trace:
-  Server Component:
-    [next]/internal/font/google/inter_5972bc34.module.css
-    [next]/internal/font/google/inter_5972bc34.js
-    ./app/layout.tsx
-
-
-[00:08:26.845] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
-
-If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
-
-For more information, see https://radix-ui.com/primitives/docs/components/dialog
-[00:08:26.845] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:08:26.845] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
-
-If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
-
-For more information, see https://radix-ui.com/primitives/docs/components/dialog
-[00:08:26.845] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:08:29.883] Server  LOG      ✓ Compiled in 24ms
-[00:08:29.984] Browser ERROR   ./app/courses/[id]/page.tsx:420:16
-Parsing ecmascript source code failed
-  418 |             ) : (
-  419 |                 <ModuleList />
-> 420 |               </div>
-      |                ^^^^^
-  421 |             )}
-  422 |           </li>
-  423 |         </aside>
-
-Unterminated regexp literal
+    ./app/courses/[id]/topics/[topicId]/page.tsx [Client Component SSR]
+    ./app/courses/[id]/topics/[topicId]/page.tsx [Server Component]
+[00:15:43.905] Browser ERROR   ./app/courses/[id]/topics/[topicId]/page.tsx:47:1
+Export default doesn't exist in target module
+  45 | import Link from "next/link";
+  46 | import { cn } from "@/lib/utils";
+> 47 | import AssistantContent from "@/components/AssistantConten";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  48 |
+  49 | interface Message {
+  50 |   role: "user" | "assistant";
+
+The export default was not found in module [project]/components/AssistantConten.tsx [app-ssr] (ecmascript).
+Did you mean to import AssistantContent?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
 
 Import traces:
   Client Component Browser:
-    ./app/courses/[id]/page.tsx [Client Component Browser]
-    ./app/courses/[id]/page.tsx [Server Component]
+    ./app/courses/[id]/topics/[topicId]/page.tsx [Client Component Browser]
+    ./app/courses/[id]/topics/[topicId]/page.tsx [Server Component]
 
   Client Component SSR:
-    ./app/courses/[id]/page.tsx [Client Component SSR]
-    ./app/courses/[id]/page.tsx [Server Component]
-[00:08:30.812] Server  WARN     ⚠ [next]/internal/font/google/inter_5972bc34.module.css
-Error while requesting resource
-There was an issue requesting https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap
-
-Import trace:
-  Server Component:
-    [next]/internal/font/google/inter_5972bc34.module.css
-    [next]/internal/font/google/inter_5972bc34.js
-    ./app/layout.tsx
-
-
-[00:08:30.812] Server  WARN     ⚠ [next]/internal/font/google/inter_5972bc34.module.css
-next/font: warning:
-Failed to download `Inter` from Google Fonts. Using fallback font instead.
-
-Import trace:
-  Server Component:
-    [next]/internal/font/google/inter_5972bc34.module.css
-    [next]/internal/font/google/inter_5972bc34.js
-    ./app/layout.tsx
-
-
-[00:08:35.719] Server  LOG      ✓ Compiled in 45ms
-[00:08:37.244] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+    ./app/courses/[id]/topics/[topicId]/page.tsx [Client Component SSR]
+    ./app/courses/[id]/topics/[topicId]/page.tsx [Server Component]
+[00:16:03.537] Server  ERROR    ⨯ ReferenceError: AssistantContent is not defined
+[00:16:03.906] Browser ERROR   uncaughtError: ReferenceError: AssistantContent is not defined
+[00:16:11.635] Server  WARN     ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+[00:16:11.704] Server  LOG      ✓ Compiled in 35ms
+[00:17:29.611] Server  LOG      ✓ Compiled in 33ms
+[00:17:47.631] Server  LOG      ✓ Compiled in 30ms
+[00:18:07.404] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
 
 If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
 
 For more information, see https://radix-ui.com/primitives/docs/components/dialog
-[00:08:37.244] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:08:37.244] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+[00:18:07.404] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:18:07.404] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
 
 If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
 
 For more information, see https://radix-ui.com/primitives/docs/components/dialog
-[00:08:37.244] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:08:41.612] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+[00:18:07.404] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:18:29.990] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
 
 If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
 
 For more information, see https://radix-ui.com/primitives/docs/components/dialog
-[00:08:41.612] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:08:41.612] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+[00:18:29.990] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:18:29.990] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
 
 If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
 
 For more information, see https://radix-ui.com/primitives/docs/components/dialog
-[00:08:41.612] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:08:44.909] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
-
-If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
-
-For more information, see https://radix-ui.com/primitives/docs/components/dialog
-[00:08:44.909] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:08:44.909] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
-
-If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
-
-For more information, see https://radix-ui.com/primitives/docs/components/dialog
-[00:08:44.909] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:09:02.410] Server  LOG      ✓ Compiled in 35ms
-[00:09:09.892] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
-
-If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
-
-For more information, see https://radix-ui.com/primitives/docs/components/dialog
-[00:09:09.892] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:09:09.892] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
-
-If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
-
-For more information, see https://radix-ui.com/primitives/docs/components/dialog
-[00:09:09.892] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:09:19.452] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
-
-If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
-
-For more information, see https://radix-ui.com/primitives/docs/components/dialog
-[00:09:19.452] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:09:19.452] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
-
-If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
-
-For more information, see https://radix-ui.com/primitives/docs/components/dialog
-[00:09:19.452] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:09:24.143] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
-
-If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
-
-For more information, see https://radix-ui.com/primitives/docs/components/dialog
-[00:09:24.143] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:09:24.143] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
-
-If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
-
-For more information, see https://radix-ui.com/primitives/docs/components/dialog
-[00:09:24.143] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:09:25.832] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
-
-If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
-
-For more information, see https://radix-ui.com/primitives/docs/components/dialog
-[00:09:25.832] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:09:25.832] Browser ERROR   `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
-
-If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
-
-For more information, see https://radix-ui.com/primitives/docs/components/dialog
-[00:09:25.832] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-[00:09:29.727] Server  WARN     ⚠ [next]/internal/font/google/inter_5972bc34.module.css
-Error while requesting resource
-There was an issue requesting https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap
-
-Import trace:
-  Server Component:
-    [next]/internal/font/google/inter_5972bc34.module.css
-    [next]/internal/font/google/inter_5972bc34.js
-    ./app/layout.tsx
-
-
-[00:09:29.727] Server  WARN     ⚠ [next]/internal/font/google/inter_5972bc34.module.css
-next/font: warning:
-Failed to download `Inter` from Google Fonts. Using fallback font instead.
-
-Import trace:
-  Server Component:
-    [next]/internal/font/google/inter_5972bc34.module.css
-    [next]/internal/font/google/inter_5972bc34.js
-    ./app/layout.tsx
-
-
+[00:18:29.990] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:19:28.200] Server  LOG      ✓ Compiled in 20ms

@@ -1,5 +1,7 @@
 {
+  "/api/ai-assistant/route": "app/api/ai-assistant/route.js",
   "/courses/[id]/page": "app/courses/[id]/page.js",
+  "/courses/[id]/topics/[topicId]/page": "app/courses/[id]/topics/[topicId]/page.js",
   "/dashboard/page": "app/dashboard/page.js",
   "/page": "app/page.js"
 }
